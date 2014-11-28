@@ -2,18 +2,21 @@ package controleurs.serveur;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 
 import modeles.ServeurModele;
+import modeles.dao.beansreceve.IAction;
 
 public class Reception implements Runnable {
 
 	private BufferedReader in;
+	private ObjectInputStream inObject;
 	private String message = null;
 	private ServeurModele mod;
 	
-	public Reception(ServeurModele m, BufferedReader in){
+	public Reception(ServeurModele m, ObjectInputStream in){
 		mod = m;
-		this.in = in;
+		this.inObject = in;
 	}
 	
 	public void run() {
@@ -21,9 +24,16 @@ public class Reception implements Runnable {
 		while(true){
 	        try {
 	        	
-			message = in.readLine();
-			System.out.println("message : "+message);
-			
+	//			message = in.readLine();
+	//			System.out.println("message : "+message);
+				
+		        Object Obj = inObject.readObject();
+		        
+		        if( Obj instanceof IAction ){
+		        	System.out.println("Objet récup : "+(IAction)Obj);
+		        }else
+		        	System.out.println("ORNI : Objet Recu Non Identifié ! ");
+	        
 		    } catch (IOException e) {
 				System.out.println("Le client s'est déco");
 				//e.printStackTrace();
@@ -34,6 +44,9 @@ public class Reception implements Runnable {
 					e1.printStackTrace();
 				}
 				break;
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}

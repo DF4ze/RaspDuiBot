@@ -1,6 +1,8 @@
-package modeles;
+package modeles.dao.beansreceve;
 
-public interface IActionCommunication {
+import java.io.Serializable;
+
+public interface IAction extends Serializable {
 	//// Priorities
 	final int prioLow 		= 0;
 	final int prioMedium 	= 1;
@@ -42,4 +44,5 @@ public interface IActionCommunication {
 	public long getTimeStamp();
 	public int getPriority();
 	public boolean isComplete();
+	public String toString();
 }
