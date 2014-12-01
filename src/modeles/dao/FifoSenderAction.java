@@ -2,7 +2,7 @@ package modeles.dao;
 
 import java.util.LinkedList;
 
-import modeles.dao.beansreceve.IAction;
+import modeles.dao.communication.beansactions.IAction;
 
 public class FifoSenderAction {
 	private static LinkedList<IAction> fifo = null;

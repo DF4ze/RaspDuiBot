@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 
 import modeles.ServeurModele;
-import modeles.dao.beansreceve.IAction;
+import modeles.dao.communication.beansactions.IAction;
 
 public class Reception implements Runnable {
 
