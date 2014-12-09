@@ -4,6 +4,7 @@ public class ExtraAction extends GeneralAction{
 
 	private static final long serialVersionUID = 1L;
 	
+	private Integer type 	= null;
 	private Integer key 	= null;
 	private Integer value 	= null;
 
@@ -11,14 +12,16 @@ public class ExtraAction extends GeneralAction{
 		super();
 	}
 
-	public ExtraAction(int key, int value) {
+	public ExtraAction(int type, int key, int value) {
 		super();
+		this.type = type;
 		this.key = key;
 		this.value = value;
 	}
 
-	public ExtraAction(int key, int value, int priority) {
+	public ExtraAction(int type, int key, int value, int priority) {
 		super();
+		this.type = type;
 		this.key = key;
 		this.value = value;
 		setPriority(priority);
@@ -27,7 +30,7 @@ public class ExtraAction extends GeneralAction{
 
 
 	public String getAction() {
-		return IAction.modeExtra +"."+ key +"."+ value;
+		return IAction.modeExtra +"."+ type +"."+ key +"."+ value;
 	}
 	
 	public boolean isComplete(){
@@ -52,6 +55,14 @@ public class ExtraAction extends GeneralAction{
 	}
 	public void setValue(int value) {
 		this.value = value;
+	}
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
 	}
 
 
