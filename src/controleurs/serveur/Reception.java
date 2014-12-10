@@ -1,6 +1,5 @@
 package controleurs.serveur;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
@@ -9,9 +8,8 @@ import modeles.dao.communication.beansactions.IAction;
 
 public class Reception implements Runnable {
 
-	private BufferedReader in;
+
 	private ObjectInputStream inObject;
-	private String message = null;
 	private ServeurModele mod;
 	
 	public Reception(ServeurModele m, ObjectInputStream in){
@@ -23,10 +21,7 @@ public class Reception implements Runnable {
 		
 		while(true){
 	        try {
-	        	
-	//			message = in.readLine();
-	//			System.out.println("message : "+message);
-				
+	        			
 		        Object Obj = inObject.readObject();
 		        
 		        if( Obj instanceof IAction ){

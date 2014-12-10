@@ -1,8 +1,6 @@
 package controleurs.serveur;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -12,7 +10,6 @@ import modeles.ServeurModele;
 public class ClientServeur implements Runnable {
 
 	private Socket socket = null;
-	private BufferedReader in = null;
 	private ObjectInputStream inObject = null;
 	private PrintWriter out = null;
 	private ServeurModele mod;
@@ -26,7 +23,6 @@ public class ClientServeur implements Runnable {
 	public void run() {
 		
 		try {
-		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		inObject = new ObjectInputStream(socket.getInputStream());
 		out = new PrintWriter(socket.getOutputStream());
 		
