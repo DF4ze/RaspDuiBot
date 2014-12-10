@@ -14,10 +14,10 @@ public interface IAction extends Serializable {
 	final int modeExtra		= 3;
 	
 	//// Extras
-	final int modeLight		= 1;
-	final int modeWebcam	= 2;
-	final int modeAlim		= 3;
-	final int modeDrone		= 4;
+	final int typeLight		= 1;
+	final int typeWebcam	= 2;
+	final int typeAlim		= 3;
+	final int typeDrone		= 4;
 	
 	// Extra-Lights
 	final static int Lazer 	= 1;
@@ -28,11 +28,11 @@ public interface IAction extends Serializable {
 	final static int On 		= 1;
 	final static int Off		= 2;
 	final static int Restart	= 3;
+	
+	final static int webcamTour	= 1;
 
 	// Extra-Alims
-	final static int alimArduino = 1;
-	final static int alimElectro = 2;
-	final static int alimPeriph  = 3;
+	final static int alimStandBy = 1;
 	
 	// Extra-Drone
 	final static int DroneAuto 		= 1;
