@@ -19,21 +19,25 @@ public class ListenFifoShellSend implements Runnable{
 					FifoSenderShell.getInstance().wait();
 					
 					while( FifoSenderShell.getInstance().size() != 0 ){
-						String cmd = FifoSenderShell.get();
+						String[] cmd = FifoSenderShell.get();
 				 
-						String output = ExecuteShellComand.executeCommand(cmd);
-				 
-						synchronized (FifoReceiverShell.getInstance()) {
-							FifoReceiverShell.put(output);
-							if( Verbose.isEnable() )
-								System.out.println( "Shell Received : "+output );
+						final ExecuteShellComand shell = new ExecuteShellComand(cmd);
+						Thread th = new Thread(){
+							public void run(){
+								String output = shell.executeCommand();
+								
+								synchronized (FifoReceiverShell.getInstance()) {
+									FifoReceiverShell.put(output);
+									if( Verbose.isEnable() )
+										System.out.println( "Shell Received : "+output );
 
-							
-							FifoSenderShell.getInstance().notifyAll();
-							
-						}
+									FifoReceiverShell.getInstance().notifyAll();
+								}
+							}
+						};
 						
-				 
+						th.setDaemon(true);
+						th.start();
 					}
 				} catch (InterruptedException e) { break;}
 			}

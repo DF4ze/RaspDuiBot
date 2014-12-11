@@ -22,11 +22,16 @@ public class ListenFifoSocket implements Runnable{
 							
 							if( ea.getType() == IAction.typeAlim || ea.getType() == IAction.typeWebcam ){
 								synchronized (FifoSenderShell.getInstance()) {
-									String cmd = ShellPattern.extraToShell(ea);
+									String[] cmd = ShellPattern.extraToShell(ea);
 									FifoSenderShell.put( cmd );
 									
-									if( Verbose.isEnable() )
-										System.out.println( "Shell Send : "+cmd );
+									if( Verbose.isEnable() ){
+										String sCmd = "";
+										for( String txt : cmd ){
+											sCmd+= txt+" ";
+										}
+										System.out.println( "Shell Send : "+sCmd );
+									}
 
 									FifoSenderShell.getInstance().notifyAll();
 									
