@@ -2,8 +2,12 @@ package modeles;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Observable;
 import java.util.concurrent.Semaphore;
+
 
 public class ServeurModele extends Observable {
 
@@ -23,7 +27,10 @@ public class ServeurModele extends Observable {
 	private Integer iPort 			= DEFAUT_PORT;
 	private Integer iMaxConnexion 	= DEFAUT_MAXCON;
 	private boolean bRunning 		= DEFAUT_STATE;
-	private Semaphore semaphore;			
+	private Semaphore semaphore;	
+	
+	private HashMap<Integer, Socket> clientsConnected = new HashMap<Integer, Socket>();
+	private int numClient = 0;
 	
 
 
@@ -35,6 +42,41 @@ public class ServeurModele extends Observable {
 		setSemaphore(new Semaphore( getiMaxConnexion() ));
 	}
 
+	public int addClient( Socket client ){
+		numClient++;
+		clientsConnected.put(numClient, client);
+		return numClient;
+	}
+	public boolean delClient( int key ){
+		Object o = clientsConnected.remove(key);
+		boolean bOk = true;
+		if( o == null )
+			bOk = false;
+		
+		if( clientsConnected.size() == 0 ){
+			setChanged();
+			notifyObservers("NOMORECLIENT");
+		}
+			
+		return bOk;
+	}
+	public Integer delClient( Socket client ){
+		Integer num = null;
+		for( Entry<Integer, Socket> entry : clientsConnected.entrySet()){
+			if( entry.getValue().equals(client) ){
+				delClient(entry.getKey());
+				num = entry.getKey();
+				break;
+			}
+		}
+		return num;
+	}
+	public void delAllClient(){
+		clientsConnected.clear();
+	}
+	public int getNbConnected(){
+		return clientsConnected.size();
+	}
 	
 	public Integer getiPort() {
 		return iPort;
@@ -78,6 +120,11 @@ public class ServeurModele extends Observable {
 	
 	public void releaseConnexion() throws InterruptedException{
 		semaphore.release();
+	}
+	
+	public void releaseConnexion( Socket s ) throws InterruptedException{
+		releaseConnexion();
+		delClient(s);
 	}
 	
 	
@@ -161,6 +208,7 @@ public class ServeurModele extends Observable {
 		}
 		return sMsg;
 	}
+
 
 
 

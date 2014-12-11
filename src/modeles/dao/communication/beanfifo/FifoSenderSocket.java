@@ -1,13 +1,13 @@
-package modeles.dao;
+package modeles.dao.communication.beanfifo;
 
 import java.util.LinkedList;
 
 import modeles.dao.communication.beansactions.IAction;
 
-public class FifoSenderAction {
+public class FifoSenderSocket {
 	private static LinkedList<IAction> fifo = null;
 
-	private FifoSenderAction() {
+	private FifoSenderSocket() {
 		
 	}
 	public static LinkedList<IAction> getInstance(){
@@ -15,5 +15,11 @@ public class FifoSenderAction {
 			fifo = new LinkedList<IAction>();
 		}
 		return fifo;
+	}
+	public static IAction get(){
+		return getInstance().poll();
+	}
+	public static void put( IAction ia){
+		getInstance().addLast(ia);
 	}
 }

@@ -1,4 +1,4 @@
-package controleurs;
+package controleurs.socket;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -10,13 +10,14 @@ import modeles.Verbose;
 
 
 
-public class Serveur implements Observer{
+public class SocketMgr implements Observer{
 	private ServeurModele mod;
-	private ServerSocket socket;
+	private ServerSocket srvSocket;
 	private Thread thread;
 
-	public Serveur( ServeurModele m ) {
-		this.mod = m;
+	public SocketMgr( ServeurModele m ) {
+		mod = m;
+		mod.delAllClient();
 		
 		if( mod.isRunning() )
 			demarrerServeur();
@@ -25,8 +26,8 @@ public class Serveur implements Observer{
 	private void demarrerServeur(){
 		try {
 			
-			socket = new ServerSocket( mod.getiPort());
-			thread = new Thread(new AccepterClients( mod, socket));
+			srvSocket = new ServerSocket( mod.getiPort());
+			thread = new Thread(new AccepterClients( mod, srvSocket));
 			thread.start();
 			System.out.println("INFO : Socket demarree - Port : "+mod.getiPort()+" - NbMaxCon : "+mod.getiMaxConnexion());
 		
@@ -34,8 +35,8 @@ public class Serveur implements Observer{
 			
 			if( Verbose.isEnable() ){
 				System.out.println("Erreur lors du lancement du Thread Serveur : \n"+e.getMessage());
-				//e.printStackTrace();
 			}
+			mod.setRunning(false);
 		}			
 	}
 	

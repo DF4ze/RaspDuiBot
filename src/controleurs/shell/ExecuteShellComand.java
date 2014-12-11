@@ -7,23 +7,24 @@ public class ExecuteShellComand {
  
 	public static void main(String[] args) {
  
-		ExecuteShellComand obj = new ExecuteShellComand();
+//		ExecuteShellComand obj = new ExecuteShellComand();
  
 		String domainName = "google.com";
  
 		//in mac oxs
-		String command = "ping -c 3 " + domainName;
+		String command = "ping -c 1 " + domainName;
  
 		//in windows
 		//String command = "ping -n 3 " + domainName;
  
-		String output = obj.executeCommand(command);
+		String output = ExecuteShellComand.executeCommand(command);
+//		String output = obj.executeCommand(command);
  
 		System.out.println(output);
  
 	}
  
-	private String executeCommand(String command) {
+	public static String executeCommand(String command) {
  
 		StringBuffer output = new StringBuffer();
  

@@ -1,4 +1,4 @@
-package controleurs.serveur;
+package controleurs.socket.com;
 
 import java.io.PrintWriter;
 import java.util.Scanner;

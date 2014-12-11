@@ -1,6 +1,6 @@
 package principal;
 
-import controleurs.Controleur;
+import controleurs.CtrlGeneral;
 import modeles.ServeurModele;
 import modeles.Verbose;
 
@@ -89,7 +89,7 @@ public class Lanceur {
 		
 		// Lancement de l'application
 		if( bOk ){
-			new Controleur( iPort, iMaxCon, isRunning );
+			new CtrlGeneral( iPort, iMaxCon, isRunning );
 		}
 	}
 	
