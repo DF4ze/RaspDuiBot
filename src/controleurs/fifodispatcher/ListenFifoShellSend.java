@@ -26,13 +26,22 @@ public class ListenFifoShellSend implements Runnable{
 							public void run(){
 								String output = shell.executeCommand();
 								
-								synchronized (FifoReceiverShell.getInstance()) {
+								if( shell.isCommandEnded() )
+									System.out.println("Fin de la commande");
+								else
+									System.out.println("Commande n'est pas finie");
+								if( shell.isError() )
+									System.out.println("Commande en erreur");
+								else
+									System.out.println("Commande sans erreur");
+								
+								//synchronized (FifoReceiverShell.getInstance()) {
 									FifoReceiverShell.put(output);
 									if( Verbose.isEnable() )
 										System.out.println( "Shell Received : "+output );
 
-									FifoReceiverShell.getInstance().notifyAll();
-								}
+								//	FifoReceiverShell.getInstance().notifyAll();
+								//}
 							}
 						};
 						

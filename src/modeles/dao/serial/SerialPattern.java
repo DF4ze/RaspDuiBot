@@ -14,4 +14,10 @@ public class SerialPattern {
 		
 		return "";
 	}
+	public static IAction serialToAction( String sSerial ){
+		
+		
+		
+		return null;
+	}
 }

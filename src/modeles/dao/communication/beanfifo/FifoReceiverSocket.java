@@ -20,7 +20,10 @@ public class FifoReceiverSocket {
 		return getInstance().poll();
 	}
 	public static void put( IAction ia){
-		getInstance().addLast(ia);
+		synchronized( getInstance() ){
+			getInstance().addLast(ia);
+			getInstance().notifyAll();
+		}
 	}
 	
 }

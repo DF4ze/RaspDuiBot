@@ -18,6 +18,9 @@ public class FifoReceiverSerial {
 		return getInstance().poll();
 	}
 	public static void put( String ia){
-		getInstance().addLast(ia);
+		synchronized( getInstance() ){
+			getInstance().addLast(ia);
+			getInstance().notifyAll();
+		}
 	}
 }

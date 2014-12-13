@@ -43,7 +43,7 @@ public class ListenFifoSocket implements Runnable{
 	}
 	
 	private void sendToShell( ExtraAction ea ){
-		synchronized( FifoSenderShell.getInstance() ){
+		//synchronized( FifoSenderShell.getInstance() ){
 			String[] cmd = ShellPattern.extraToShell(ea);
 			FifoSenderShell.put( cmd );
 			
@@ -55,8 +55,8 @@ public class ListenFifoSocket implements Runnable{
 				System.out.println( "Shell Send : "+sCmd );
 			}
 
-			FifoSenderShell.getInstance().notifyAll();
-		}		
+			//FifoSenderShell.getInstance().notifyAll();
+		//}		
 	}
 	
 	private void sendToSerial( IAction ia ){
@@ -64,7 +64,7 @@ public class ListenFifoSocket implements Runnable{
 			FifoSenderSerial.put( ia );
 			
 			if( Verbose.isEnable() ){
-				System.out.println( "Serial Send : "+ia.toString() );
+				System.out.println( "Socket-Serial Send : "+ia.toString() );
 			}
 			
 			FifoSenderSerial.getInstance().notifyAll();

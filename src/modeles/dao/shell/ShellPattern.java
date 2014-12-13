@@ -12,6 +12,8 @@ public class ShellPattern {
 		"-o", "/usr/local/lib/output_http.so -w /var/www/cam"};
 	
 	private static String [] stopSteamWCTour = {"pkill", "mjpg_streamer"};
+	private static String [] test = {"ping", "www.google.fr"};
+	
 	
 	protected ShellPattern() {
 		// TODO Auto-generated constructor stub
@@ -26,6 +28,8 @@ public class ShellPattern {
 				}else
 					shellCmd = startSteamWCTour;
 			}
+		}else if( ea.getType() == IAction.typeAlim ){
+			shellCmd = test;
 		}
 		return shellCmd;
 	}

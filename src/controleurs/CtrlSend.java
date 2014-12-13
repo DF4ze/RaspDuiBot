@@ -1,5 +1,6 @@
 package controleurs;
 
+import controleurs.fifodispatcher.ListenFifoSerialSend;
 import controleurs.fifodispatcher.ListenFifoShellSend;
 
 
@@ -14,6 +15,9 @@ public class CtrlSend {
 		fSocket.setDaemon(true);
 		fSocket.start();
 		
+		Thread fSerial = new Thread(new ListenFifoSerialSend());
+		fSerial.setDaemon(true);
+		fSerial.start();
 	}
 
 	

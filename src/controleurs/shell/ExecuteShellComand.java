@@ -3,6 +3,8 @@ package controleurs.shell;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import modeles.Verbose;
+
 public class ExecuteShellComand implements Runnable{
  
 	private String[] command = {};
@@ -52,6 +54,9 @@ public class ExecuteShellComand implements Runnable{
 			
 		} catch (Exception e) {
 			error = true;
+			
+			if( Verbose.isEnable() )
+				e.printStackTrace();
 		}finally{
 			commandEnded = true;
 			//notifyAll();
