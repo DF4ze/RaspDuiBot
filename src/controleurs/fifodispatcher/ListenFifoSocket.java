@@ -61,7 +61,7 @@ public class ListenFifoSocket implements Runnable{
 	
 	private void sendToSerial( IAction ia ){
 		synchronized( FifoSenderSerial.getInstance() ){
-			FifoSenderSerial.put( ia.toString() );
+			FifoSenderSerial.put( ia );
 			
 			if( Verbose.isEnable() ){
 				System.out.println( "Serial Send : "+ia.toString() );
