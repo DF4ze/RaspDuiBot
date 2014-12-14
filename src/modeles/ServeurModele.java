@@ -23,7 +23,8 @@ public class ServeurModele extends Observable {
 	public static final int DEFAUT_MAXCON	= 1;
 	public static final boolean DEFAUT_STATE= true;
 
-	public static final String DEFAUT_SERIAL= "/dev/ttyAMAO";
+//	public static final String DEFAUT_SERIAL= "ttyAMA0";
+	public static final String DEFAUT_SERIAL= "/dev/ttyAMA0";
 	public static final int DEFAUT_SPEED	= 9600;
 	public static final int DEFAUT_TIMEOUT	= 2000;
 	

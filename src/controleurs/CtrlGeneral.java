@@ -1,5 +1,11 @@
 package controleurs;
 
+import gnu.io.NoSuchPortException;
+import gnu.io.PortInUseException;
+import gnu.io.UnsupportedCommOperationException;
+
+import java.io.IOException;
+
 import controleurs.serial.SerialMgr;
 import controleurs.socket.SocketMgr;
 import modeles.ServeurModele;
@@ -12,7 +18,7 @@ public class CtrlGeneral {
 	private SerialMgr serial;
 
 	public CtrlGeneral( int iPort, int iMaxCon, boolean isRunning, String sSerialPort, int iSerialSpeed, int iSerialTimeOut ) {
-		if( iPort == -1 )
+		if( iPort == -1 ) 
 			iPort = ServeurModele.DEFAUT_PORT;
 
 		if( iMaxCon == -1 )
@@ -23,9 +29,20 @@ public class CtrlGeneral {
 		serial = new SerialMgr( mod );
 		try {
 			serial.connect();
-		} catch (Exception e) {
-			System.err.println("Erreur lors de l'ouverture du port serie\n"+e.getMessage());
+		} catch (PortInUseException e) {
+			System.err.println("Port serie deja utilise");
+			//e.printStackTrace();
+		} catch (UnsupportedCommOperationException e) {
+			System.err.println("Port serie : Operation non supportee");
+			
+		} catch (IOException e) {
+			System.err.println("Port serie : Erreur sur le stream");
+			
+		} catch (NoSuchPortException e) {
+			System.err.println("Port serie n'existe pas");
+			
 		}
+		
 		
 		CtrlRecep cr = new CtrlRecep();
 		CtrlSend cs = new CtrlSend();
