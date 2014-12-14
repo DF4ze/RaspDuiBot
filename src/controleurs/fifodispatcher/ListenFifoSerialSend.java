@@ -1,5 +1,6 @@
 package controleurs.fifodispatcher;
 
+import controleurs.serial.com.SerialTransmit;
 import modeles.Verbose;
 import modeles.dao.communication.beanfifo.FifoSenderSerial;
 import modeles.dao.communication.beansactions.IAction;
@@ -22,6 +23,7 @@ public class ListenFifoSerialSend implements Runnable{
 						// Action a réaliser sur le IAction
 						
 						// mécanisme de send sur le serial
+						// SerialTransmit.send(action.toString());
 						
 						if( Verbose.isEnable() )
 							System.out.println("FIFO-Serial out : "+action.toString());

@@ -30,9 +30,10 @@ public class AccepterClients implements Runnable {
 				SocketNum socket = new SocketNum( srvSocket.accept() ); 
 				
 				socket.setNumber( mod.addClient(socket.getSocket()) );
-				System.out.println("Client "+socket.getNumber()+" connected!");
 				
 				ClientServeur cs = new ClientServeur(mod, socket);
+				System.out.println("Client "+socket.getNumber()+" connected! IP : "+socket.getSocket().getInetAddress().toString());
+
 				thread = new Thread(cs);
 				thread.start();
 				

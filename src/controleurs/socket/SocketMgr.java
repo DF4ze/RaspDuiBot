@@ -1,6 +1,7 @@
 package controleurs.socket;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.util.Observable;
 import java.util.Observer;
@@ -29,12 +30,15 @@ public class SocketMgr implements Observer{
 			srvSocket = new ServerSocket( mod.getiPort());
 			thread = new Thread(new AccepterClients( mod, srvSocket));
 			thread.start();
-			System.out.println("INFO : Socket demarree - Port : "+mod.getiPort()+" - NbMaxCon : "+mod.getiMaxConnexion());
+
+			InetAddress thisIp = InetAddress.getLocalHost();
+
+			System.out.println("INFO : Socket demarree - IP : "+thisIp.getHostAddress()+" Port : "+mod.getiPort()+" - NbMaxCon : "+mod.getiMaxConnexion());
 		
 		} catch (IOException e) {
 			
 			if( Verbose.isEnable() ){
-				System.out.println("Erreur lors du lancement du Thread Serveur : \n"+e.getMessage());
+				System.err.println("Erreur lors du lancement du Thread Serveur : \n"+e.getMessage());
 			}
 			mod.setRunning(false);
 		}			

@@ -1,8 +1,8 @@
 package principal;
 
-import controleurs.CtrlGeneral;
 import modeles.ServeurModele;
 import modeles.Verbose;
+import controleurs.CtrlGeneral;
 
 public class Lanceur {
 
@@ -10,6 +10,9 @@ public class Lanceur {
 		int iPort = -1;
 		int iMaxCon = -1;
 		boolean isRunning = ServeurModele.DEFAUT_STATE;
+		String sSerialPort = ServeurModele.DEFAUT_SERIAL;
+		int iSerialSpeed = ServeurModele.DEFAUT_SPEED;
+		int iSerialTimeout = ServeurModele.DEFAUT_TIMEOUT;
 		
 		boolean bOk = true;
 		
@@ -27,7 +30,6 @@ public class Lanceur {
 					}else{
 						System.out.println(ServeurModele.erreurToMessage(erreur[0]));
 						bOk = false;
-						break;
 					}
 						
 				}else
@@ -39,12 +41,15 @@ public class Lanceur {
 				if( i+1 < args.length ){
 					if( args[i+1].equals("0") || args[i+1].equals("false")){
 						Verbose.setEnable(false);
+						i++;
 					}else if( args[i+1].equals("1") || args[i+1].equals("true")){
 						Verbose.setEnable(true);
+						i++;
 					}else
 						bOk = false;
 				}else
 					bOk = false;
+			
 				
 			// Si parametre de max connexion
 			}else if( args[i].equals("-m") || args[i].equals("-maxcon") ){
@@ -58,11 +63,11 @@ public class Lanceur {
 					}else{
 						System.out.println(ServeurModele.erreurToMessage(erreur[0]));
 						bOk = false;
-						break;
 					}
 					
-				}else
+				}else{
 					bOk = false;
+				}
 				
 			// Si parametre de Lancement
 			}else if( args[i].equals("-r") || args[i].equals("-run") ){
@@ -70,26 +75,72 @@ public class Lanceur {
 				if( i+1 < args.length ){
 					if( args[i+1].equals("0") || args[i+1].equals("false")){
 						isRunning = false;
+						i++;
 					}else if( args[i+1].equals("1") || args[i+1].equals("true")){
 						isRunning = true;
-					}else
+						i++;
+					}else{
 						bOk = false;
+					}
 					
-				}else
+				}else{
 					bOk = false;
+				}
+			
+			// Serial Port
+			}else if( args[i].equals("-sp") || args[i].equals("-serialport") ){
+				// le parametre est-il présent?
+				if( i+1 < args.length ){
+					sSerialPort = args[i+1];
+					i++;
+				}else{
+					bOk = false;
+				}
+			
+			// Serial Speed
+			}else if( args[i].equals("-ss") || args[i].equals("-serialspeed") ){
+				// le parametre est-il présent?
+				if( i+1 < args.length ){
+					try{
+						iSerialSpeed = Integer.valueOf(args[i+1]);
+						i++;
+					}catch( Exception e ){
+						bOk = false;
+					}
+				}else{
+					bOk = false;
+				}
+				
+			// Serial TimeOut
+			}else if( args[i].equals("-t") || args[i].equals("-serialtimeout") ){
+				// le parametre est-il présent?
+				if( i+1 < args.length ){
+					try{
+						iSerialTimeout = Integer.valueOf(args[i+1]);
+						i++;
+					}catch( Exception e ){
+						bOk = false;
+					}
+				}else{
+					bOk = false;
+				}
 			}
 			
 			// si demande de l'aide ou s'il y a eu une erreur
 			if( args[i].equals("-h") || args[i].equals("-help") || !bOk ){
 				System.out.println( getHelpMsg( args ) );
+				bOk = false;
 			}
+			
+			if( !bOk )
+				break;
 		}
 		
 		
 		
 		// Lancement de l'application
 		if( bOk ){
-			new CtrlGeneral( iPort, iMaxCon, isRunning );
+			new CtrlGeneral( iPort, iMaxCon, isRunning, sSerialPort, iSerialSpeed, iSerialTimeout );
 		}
 	}
 	

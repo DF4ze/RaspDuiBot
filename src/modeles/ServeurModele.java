@@ -22,22 +22,32 @@ public class ServeurModele extends Observable {
 	public static final int DEFAUT_PORT		= 2009;
 	public static final int DEFAUT_MAXCON	= 1;
 	public static final boolean DEFAUT_STATE= true;
+
+	public static final String DEFAUT_SERIAL= "/dev/ttyAMAO";
+	public static final int DEFAUT_SPEED	= 9600;
+	public static final int DEFAUT_TIMEOUT	= 2000;
 	
 	
 	private Integer iPort 			= DEFAUT_PORT;
 	private Integer iMaxConnexion 	= DEFAUT_MAXCON;
 	private boolean bRunning 		= DEFAUT_STATE;
-	private Semaphore semaphore;	
+	private String sSerialPort 		= DEFAUT_SERIAL;
+	private int iSerialSpeed 		= DEFAUT_SPEED;
+	private int iSerialTimeOut 		= DEFAUT_TIMEOUT;
 	
+	private Semaphore semaphore;	
 	private HashMap<Integer, Socket> clientsConnected = new HashMap<Integer, Socket>();
 	private int numClient = 0;
 	
 
 
-	public ServeurModele(Integer iPort, Integer iMaxConnexion, boolean isRunning) {
+	public ServeurModele(Integer iPort, Integer iMaxConnexion, boolean isRunning, String sSerialPort, int iSerialSpeed, int iSerialTimeOut) {
 		setiPort(iPort);
 		setiMaxConnexion(iMaxConnexion);
 		setRunning(isRunning);
+		setsSerialPort(sSerialPort);
+		setiSerialSpeed(iSerialSpeed);
+		setiSerialTimeOut(iSerialTimeOut);
 		 
 		setSemaphore(new Semaphore( getiMaxConnexion() ));
 	}
@@ -207,6 +217,30 @@ public class ServeurModele extends Observable {
 				sMsg += erreurToMessage(erreur[i]);
 		}
 		return sMsg;
+	}
+
+	public String getsSerialPort() {
+		return sSerialPort;
+	}
+
+	public void setsSerialPort(String sSerialPort) {
+		this.sSerialPort = sSerialPort;
+	}
+
+	public int getiSerialSpeed() {
+		return iSerialSpeed;
+	}
+
+	public void setiSerialSpeed(int iSerialSpeed) {
+		this.iSerialSpeed = iSerialSpeed;
+	}
+
+	public int getiSerialTimeOut() {
+		return iSerialTimeOut;
+	}
+
+	public void setiSerialTimeOut(int iSerialTimeOut) {
+		this.iSerialTimeOut = iSerialTimeOut;
 	}
 
 
