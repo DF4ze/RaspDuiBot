@@ -16,6 +16,12 @@ public interface IInfo {
 	// State matos
 	final static int stateAlim 		= 0;
 	final static int stateStream 	= 1;
+	
+	final static int stateLight 	= 2;
+	final static int stateLazer 	= 3;
+	final static int stateStrob 	= 4;
+	
+	
 
 	public String getInfo();
 	public String toString();

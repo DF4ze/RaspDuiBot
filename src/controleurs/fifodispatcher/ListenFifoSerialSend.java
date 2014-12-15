@@ -18,10 +18,7 @@ public class ListenFifoSerialSend implements Runnable{
 					
 					while( FifoSenderSerial.getInstance().size() != 0 ){
 						IAction action = FifoSenderSerial.get();
-						
-						// Action a réaliser sur le IAction
-						
-						// mécanisme de send sur le serial
+												
 						// SerialTransmit.send(SerialPattern.actionToSerial(action));
 						
 						if( Verbose.isEnable() )

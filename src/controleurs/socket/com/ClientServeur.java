@@ -2,7 +2,7 @@ package controleurs.socket.com;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.PrintWriter;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import modeles.ServeurModele;
@@ -13,7 +13,8 @@ public class ClientServeur implements Runnable {
 
 	private SocketNum mySocket = null;
 	private ObjectInputStream inObject = null;
-	private PrintWriter out = null;
+	private ObjectOutputStream outObject = null;
+	//private PrintWriter out = null;
 	private ServeurModele mod;
 	
 	
@@ -27,7 +28,8 @@ public class ClientServeur implements Runnable {
 		try {
 			Socket s = mySocket.getSocket();
 			inObject = new ObjectInputStream(s.getInputStream());
-			out = new PrintWriter(s.getOutputStream());
+			//out = new PrintWriter(s.getOutputStream());
+			outObject = new ObjectOutputStream(s.getOutputStream());
 			
 			
 			Thread t3 = new Thread(new Reception(mod, inObject, mySocket));
@@ -35,7 +37,7 @@ public class ClientServeur implements Runnable {
 			if( Verbose.isEnable() )
 				System.out.println("Socket "+mySocket.getNumber()+" Flux de reception ouvert ");
 	
-			Thread t4 = new Thread(new Emission( out ));
+			Thread t4 = new Thread(new Emission( outObject ));
 			t4.start();
 			if( Verbose.isEnable() )
 				System.out.println("Socket "+mySocket.getNumber()+" Flux d'emission ouvert ");
