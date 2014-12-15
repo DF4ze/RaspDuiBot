@@ -1,24 +1,26 @@
 package modeles.dao.serial;
 
 import modeles.dao.communication.beansactions.IAction;
+import modeles.dao.communication.beansinfos.IInfo;
 
 public class SerialPattern {
-	
+	private static final String codeWork = "[data]";
 
-	public SerialPattern() {
-		// TODO Auto-generated constructor stub
+	private SerialPattern() {
 	}
 
 	public static String actionToSerial( IAction ia ){
-		
-		
-		
-		return "";
+		return ia.toString();
 	}
-	public static IAction serialToAction( String sSerial ){
+	
+	public static IInfo serialToIInfo( String sSerial ){
+		IInfo info = null;
 		
+		if( sSerial.indexOf(codeWork) != -1 ){
+			
+			
+		}
 		
-		
-		return null;
+		return info;
 	}
 }

@@ -3,23 +3,24 @@ package modeles.dao.communication.beanfifo;
 import java.util.LinkedList;
 
 import modeles.dao.communication.beansactions.IAction;
+import modeles.dao.communication.beansinfos.IInfo;
 
 public class FifoSenderSocket {
-	private static LinkedList<IAction> fifo = null;
+	private static LinkedList<IInfo> fifo = null;
 
 	private FifoSenderSocket() {
 		
 	}
-	public static LinkedList<IAction> getInstance(){
+	public static LinkedList<IInfo> getInstance(){
 		if( fifo == null ){
-			fifo = new LinkedList<IAction>();
+			fifo = new LinkedList<IInfo>();
 		}
 		return fifo;
 	}
-	public static IAction get(){
+	public static IInfo get(){
 		return getInstance().poll();
 	}
-	public static void put( IAction ia){
+	public static void put( IInfo ia){
 		synchronized( getInstance() ){
 			getInstance().addLast(ia);
 			getInstance().notifyAll();

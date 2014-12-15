@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import modeles.dao.communication.beanfifo.FifoReceiverSerial;
+import modeles.dao.serial.SerialPattern;
 
 public class SerialRecept implements Runnable {
 
@@ -19,9 +20,8 @@ public class SerialRecept implements Runnable {
 		int len = -1;
 		try {
 			while ((len = this.in.read(buffer)) > -1) {
-				synchronized (FifoReceiverSerial.getInstance()) {
-					FifoReceiverSerial.put( new String(buffer, 0, len) );
-				}
+				FifoReceiverSerial.put( SerialPattern.serialToIInfo(new String(buffer, 0, len)) );
+				
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

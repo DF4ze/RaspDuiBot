@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import modeles.ServeurModele;
+import modeles.Verbose;
 
 public class SerialMgr {
 	
@@ -25,6 +26,9 @@ public class SerialMgr {
 
 	public void connect() throws PortInUseException, UnsupportedCommOperationException, IOException, NoSuchPortException {
 
+		System.setProperty("gnu.io.rxtx.SerialPorts", "/dev/ttyAMA0");
+		System.setProperty("gnu.io.rxtx.SerialPorts", "/dev/ttyACM0");
+		
 		CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(mod.getsSerialPort());
 
 		if (portIdentifier.isCurrentlyOwned()) {
@@ -48,7 +52,9 @@ public class SerialMgr {
 
 				//(new Thread(new SerialReader(in))).start();
 				//(new Thread(new SerialWriter(out))).start();
-
+				
+				if( Verbose.isEnable() )
+					System.out.println("Port serie ("+ mod.getsSerialPort() +")ok");
 			} else {
 				System.err.println("Error: Only serial ports are handled by this example.");
 			}
