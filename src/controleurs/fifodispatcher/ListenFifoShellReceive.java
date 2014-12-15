@@ -23,13 +23,14 @@ public class ListenFifoShellReceive implements Runnable{
 					while( FifoSenderShell.getInstance().size() != 0 ){
 						ShellResult shellresult = FifoReceiverShell.get();
 						
-						if( shellresult.getName().equals(ShellPattern.startSteamWCTourName) ){
+						if( shellresult.getName().equals(ShellPattern.stateStreamingName) ){
 							;
 							// ici on devrait checker si le stream a bien démarré
 							// parsing du resultat de la ligne de cmd
 							
 						}else if( shellresult.getName().equals( ShellPattern.stateAlimName ) ){
 							;
+							// vérification d'un pin du Rasp.
 							// parsing du resultat de la ligne de cmd
 						
 						}else{
