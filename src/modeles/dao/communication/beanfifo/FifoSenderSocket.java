@@ -2,7 +2,6 @@ package modeles.dao.communication.beanfifo;
 
 import java.util.LinkedList;
 
-import modeles.dao.communication.beansactions.IAction;
 import modeles.dao.communication.beansinfos.IInfo;
 
 public class FifoSenderSocket {

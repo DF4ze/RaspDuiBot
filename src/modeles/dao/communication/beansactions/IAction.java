@@ -12,13 +12,14 @@ public interface IAction extends Serializable {
 	final int modeMotor		= 1;
 	final int modeServo		= 2;
 	final int modeExtra		= 3;
+	final int modeState		= 4;
 	
 	//// Extras
+	final int typeAll		= 0;
 	final int typeLight		= 1;
 	final int typeWebcam	= 2;
 	final int typeAlim		= 3;
 	final int typeDrone		= 4;
-	final int typeState		= 5;
 	
 	// Extra-Lights
 	final static int Lazer 	= 1;
@@ -40,8 +41,8 @@ public interface IAction extends Serializable {
 	final static int DroneSemi 		= 2;
 	final static int DroneManuel  	= 3;
 	
-	// Extra-State
-	final static int stateGet = 1;
+	// State
+	final static int stateAll = 0;
 	
 	public String getAction();
 	public long getTimeStamp();

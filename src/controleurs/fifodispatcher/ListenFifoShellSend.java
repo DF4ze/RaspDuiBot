@@ -1,9 +1,11 @@
 package controleurs.fifodispatcher;
 
-import controleurs.shell.ExecuteShellComand;
 import modeles.Verbose;
 import modeles.dao.communication.beanfifo.FifoReceiverShell;
 import modeles.dao.communication.beanfifo.FifoSenderShell;
+import modeles.dao.communication.beanshell.ShellCmd;
+import modeles.dao.communication.beanshell.ShellResult;
+import controleurs.shell.ExecuteShellComand;
 
 public class ListenFifoShellSend implements Runnable{
 
@@ -19,29 +21,29 @@ public class ListenFifoShellSend implements Runnable{
 					FifoSenderShell.getInstance().wait();
 					
 					while( FifoSenderShell.getInstance().size() != 0 ){
-						String[] cmd = FifoSenderShell.get();
+						final ShellCmd shellcmd = FifoSenderShell.get();
 				 
-						final ExecuteShellComand shell = new ExecuteShellComand(cmd);
+						final ExecuteShellComand shell = new ExecuteShellComand(shellcmd.getCommand());
+						
 						Thread th = new Thread(){
 							public void run(){
 								String output = shell.executeCommand();
+								ShellResult shellresult = new ShellResult(shellcmd.getName(), shellcmd.getCommand(), output);
 								
 								if( shell.isCommandEnded() )
 									System.out.println("Fin de la commande");
 								else
 									System.out.println("Commande n'est pas finie");
+								
 								if( shell.isError() )
 									System.out.println("Commande en erreur");
 								else
 									System.out.println("Commande sans erreur");
 								
-								//synchronized (FifoReceiverShell.getInstance()) {
-									FifoReceiverShell.put(output);
-									if( Verbose.isEnable() )
-										System.out.println( "Shell Received : "+output );
+								FifoReceiverShell.put(shellresult);
+								if( Verbose.isEnable() )
+									System.out.println( "Shell Received suite a "+shellresult.getName()+" : "+shellresult.getResult() );
 
-								//	FifoReceiverShell.getInstance().notifyAll();
-								//}
 							}
 						};
 						

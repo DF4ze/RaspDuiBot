@@ -6,8 +6,10 @@ import modeles.dao.communication.beanfifo.FifoSenderSerial;
 import modeles.dao.communication.beanfifo.FifoSenderShell;
 import modeles.dao.communication.beansactions.DirectionAction;
 import modeles.dao.communication.beansactions.ExtraAction;
+import modeles.dao.communication.beansactions.GetStateAction;
 import modeles.dao.communication.beansactions.IAction;
 import modeles.dao.communication.beansactions.TourelleAction;
+import modeles.dao.communication.beanshell.ShellCmd;
 import modeles.dao.shell.ShellPattern;
 
 public class ListenFifoSocket implements Runnable{
@@ -20,7 +22,25 @@ public class ListenFifoSocket implements Runnable{
 					while( FifoReceiverSocket.getInstance().size() != 0 ){
 						IAction ia = FifoReceiverSocket.get();
 						
-						if( ia instanceof ExtraAction ){
+						if( ia instanceof GetStateAction ){
+							GetStateAction gsa = (GetStateAction) ia;
+							
+							if( gsa.getType() == IAction.typeAll){
+								sendToSerial(gsa);
+								
+								sendToShell(new GetStateAction( IAction.typeAlim, IAction.stateAll ));
+								sendToShell(new GetStateAction( IAction.typeWebcam, IAction.stateAll ));
+								//...
+								
+							}else{
+								if( gsa.getType() == IAction.typeAlim || gsa.getType() == IAction.typeWebcam )
+									sendToShell(gsa);
+								else
+									sendToSerial(gsa);
+							}
+								
+							
+						}else if( ia instanceof ExtraAction ){
 							ExtraAction ea = (ExtraAction)ia;
 							
 							extraMgr( ea );
@@ -42,21 +62,19 @@ public class ListenFifoSocket implements Runnable{
 		}
 	}
 	
-	private void sendToShell( ExtraAction ea ){
-		//synchronized( FifoSenderShell.getInstance() ){
-			String[] cmd = ShellPattern.extraToShell(ea);
-			FifoSenderShell.put( cmd );
-			
-			if( Verbose.isEnable() ){
-				String sCmd = "";
-				for( String txt : cmd ){
-					sCmd+= txt+" ";
-				}
-				System.out.println( "Shell Send : "+sCmd );
+	private void sendToShell( IAction ea ){
+				
+		ShellCmd shellcmd = ShellPattern.actionToShell(ea);
+		FifoSenderShell.put( shellcmd );
+		
+		if( Verbose.isEnable() ){
+			String sCmd = "";
+			for( String txt : shellcmd.getCommand() ){
+				sCmd+= txt+" ";
 			}
-
-			//FifoSenderShell.getInstance().notifyAll();
-		//}		
+			System.out.println( "Shell Send : "+sCmd );
+		}
+	
 	}
 	
 	private void sendToSerial( IAction ia ){
