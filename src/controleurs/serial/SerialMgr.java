@@ -26,7 +26,8 @@ public class SerialMgr {
 
 	public void connect() throws PortInUseException, UnsupportedCommOperationException, IOException, NoSuchPortException {
 
-		System.setProperty("gnu.io.rxtx.SerialPorts", "/dev/ttyAMA0");
+		System.setProperty("gnu.io.rxtx.SerialPorts", mod.getsSerialPort());
+//		System.setProperty("gnu.io.rxtx.SerialPorts", "/dev/ttyAMA0");
 	//	System.setProperty("gnu.io.rxtx.SerialPorts", "/dev/ttyACM0");
 		
 		CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(mod.getsSerialPort());

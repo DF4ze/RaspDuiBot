@@ -3,6 +3,8 @@ package controleurs.fifodispatcher;
 import modeles.Verbose;
 import modeles.dao.communication.beanfifo.FifoSenderSerial;
 import modeles.dao.communication.beansactions.IAction;
+import modeles.dao.serial.SerialPattern;
+import controleurs.serial.com.SerialTransmit;
 
 public class ListenFifoSerialSend implements Runnable{
 
@@ -19,7 +21,7 @@ public class ListenFifoSerialSend implements Runnable{
 					while( FifoSenderSerial.getInstance().size() != 0 ){
 						IAction action = FifoSenderSerial.get();
 												
-						// SerialTransmit.send(SerialPattern.actionToSerial(action));
+						SerialTransmit.send(SerialPattern.actionToSerial(action));
 						
 						if( Verbose.isEnable() )
 							System.out.println("FIFO-Serial out : "+action.toString());
