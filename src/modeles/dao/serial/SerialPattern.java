@@ -13,10 +13,10 @@ public class SerialPattern {
 	private static final String codeSensLum 	= "[lumiere]";
 	private static final String codeSensTemp 	= "[temperature]";
 
-	private static final String codeMateriel	= "[materiel]";
-	private static final String codeMatLight 	= "[light]";
-	private static final String codeMatLazer 	= "[lazer]";
-	private static final String codeMatStrob 	= "[strob]";
+	private static final String codeLight		= "[light]";
+	private static final String codeLightSpot 	= "[spot]";
+	private static final String codeLightLazer 	= "[lazer]";
+	private static final String codeLightStrob 	= "[strob]";
 
 
 	private SerialPattern() {
@@ -33,7 +33,7 @@ public class SerialPattern {
 	 * 						[lumiere]		int
 	 * 						[temperature]	int
 	 * 
-	 * 			[materiel]	[light]		boolean
+	 * 			[light]		[spot]		boolean
 	 * 						[lazer]		boolean
 	 * 						[strob]		boolean
 	 * 			
@@ -71,20 +71,20 @@ public class SerialPattern {
 					}
 				}
 			
-			}else if(sSerial.indexOf(codeMateriel) != -1){
-				sSerial.replace(codeMateriel, "");
+			}else if(sSerial.indexOf(codeLight) != -1){
+				sSerial.replace(codeLight, "");
 				
 				int matos = -1;
-				if( sSerial.indexOf(codeMatLazer) != -1){
-					sSerial.replace(codeMatLazer, "");
+				if( sSerial.indexOf(codeLightLazer) != -1){
+					sSerial.replace(codeLightLazer, "");
 					matos = IInfo.stateLazer;
 					
-				}else if( sSerial.indexOf(codeMatLight) != -1){
-					sSerial.replace(codeMatLight, "");
+				}else if( sSerial.indexOf(codeLightSpot) != -1){
+					sSerial.replace(codeLightSpot, "");
 					matos = IInfo.stateLight;
 					
-				}else if( sSerial.indexOf(codeMatStrob) != -1){
-					sSerial.replace(codeMatStrob, "");
+				}else if( sSerial.indexOf(codeLightStrob) != -1){
+					sSerial.replace(codeLightStrob, "");
 					matos = IInfo.stateStrob;
 					
 				}
