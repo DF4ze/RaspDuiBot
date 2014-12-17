@@ -12,8 +12,10 @@ import modeles.dao.communication.beansactions.TourelleAction;
 import modeles.dao.communication.beanshell.ShellCmd;
 import modeles.dao.shell.ShellPattern;
 
-public class ListenFifoSocket implements Runnable{
+public class ListenFifoSocketReceive implements Runnable{
 	public void run() {
+		if( Verbose.isEnable() )
+			System.out.println("Thread SocketReceive Launch");
 		while( true ){
 			synchronized( FifoReceiverSocket.getInstance() ){
 				try {
@@ -52,6 +54,8 @@ public class ListenFifoSocket implements Runnable{
 				} catch (InterruptedException e) { break; }
 			}
 		}
+		if( Verbose.isEnable() )
+			System.out.println("Thread SocketReceive STOPED");
 		
 	}
 	
@@ -59,7 +63,8 @@ public class ListenFifoSocket implements Runnable{
 	private void extraMgr( ExtraAction ea ){
 		if( ea.getType() == IAction.typeAlim || ea.getType() == IAction.typeWebcam ){
 			sendToShell(ea);
-		}
+		}else
+			FifoSenderSerial.put(ea);
 	}
 	
 	private void sendToShell( IAction ea ){

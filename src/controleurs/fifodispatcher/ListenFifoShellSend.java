@@ -15,6 +15,8 @@ public class ListenFifoShellSend implements Runnable{
 
 	@Override
 	public void run() {
+		if( Verbose.isEnable() )
+			System.out.println("Thread ShellSend Launch");
 		while( true ){
 			synchronized (FifoSenderShell.getInstance()) {
 				try {
@@ -55,6 +57,8 @@ public class ListenFifoShellSend implements Runnable{
 			
 			
 		}
+		if( Verbose.isEnable() )
+			System.out.println("Thread ShellSend STOPED");
 		
 	}
 

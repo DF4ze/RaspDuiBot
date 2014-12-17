@@ -44,6 +44,9 @@ public interface IAction extends Serializable {
 	// State
 	final static int stateAll = 0;
 	
+	// Serial char
+	final static String serialEndCommand = "*";
+	
 	public String getAction();
 	public long getTimeStamp();
 	public int getPriority();

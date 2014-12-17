@@ -40,7 +40,7 @@ public abstract class GeneralAction implements IAction {
 	}
 	
 	public String toString(){
-		return getAction();
+		return getAction() + IAction.serialEndCommand;
 	}
 
 }

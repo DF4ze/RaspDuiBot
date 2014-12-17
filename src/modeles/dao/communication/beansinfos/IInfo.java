@@ -1,6 +1,8 @@
 package modeles.dao.communication.beansinfos;
 
-public interface IInfo {
+import java.io.Serializable;
+
+public interface IInfo extends Serializable{
 
 	// Type d'info
 	final static int typeSensor 	= 0;

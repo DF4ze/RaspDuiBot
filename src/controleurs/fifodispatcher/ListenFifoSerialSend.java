@@ -13,6 +13,8 @@ public class ListenFifoSerialSend implements Runnable{
 
 	@Override
 	public void run() {
+		if( Verbose.isEnable() )
+			System.out.println("Thread SerialSend Launch");
 		while( true ){
 			synchronized( FifoSenderSerial.getInstance() ) {
 				try {
@@ -33,7 +35,9 @@ public class ListenFifoSerialSend implements Runnable{
 				}
 			}
 		}
-		
+		if( Verbose.isEnable() )
+			System.out.println("Thread SerialSend STOPED");
+
 	}
 
 }

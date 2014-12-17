@@ -2,6 +2,9 @@ package modeles.dao.communication.beansinfos;
 
 public class StateInfo extends GeneralInfo {
 	
+
+	private static final long serialVersionUID = 1L;
+	
 	private int materiel;
 	private boolean stat;
 

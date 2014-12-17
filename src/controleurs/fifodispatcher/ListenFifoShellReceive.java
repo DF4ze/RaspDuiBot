@@ -1,7 +1,7 @@
 package controleurs.fifodispatcher;
 
+import modeles.Verbose;
 import modeles.dao.communication.beanfifo.FifoReceiverShell;
-import modeles.dao.communication.beanfifo.FifoSenderShell;
 import modeles.dao.communication.beanfifo.FifoSenderSocket;
 import modeles.dao.communication.beanshell.ShellResult;
 import modeles.dao.communication.beansinfos.ShellInfo;
@@ -15,12 +15,15 @@ public class ListenFifoShellReceive implements Runnable{
 
 	@Override
 	public void run() {
+		if( Verbose.isEnable() )
+			System.out.println("Thread ShellReceive Launch");
+		
 		while( true ){
-			synchronized (FifoSenderShell.getInstance()) {
+			synchronized (FifoReceiverShell.getInstance()) {
 				try {
-					FifoSenderShell.getInstance().wait();
+					FifoReceiverShell.getInstance().wait();
 					
-					while( FifoSenderShell.getInstance().size() != 0 ){
+					while( FifoReceiverShell.getInstance().size() != 0 ){
 						ShellResult shellresult = FifoReceiverShell.get();
 						
 						if( shellresult.getName().equals(ShellPattern.stateStreamingName) ){
@@ -34,10 +37,14 @@ public class ListenFifoShellReceive implements Runnable{
 							// parsing du resultat de la ligne de cmd
 						
 						}else{
-							ShellInfo shellInfo = new ShellInfo(shellresult);
-							FifoSenderSocket.put(shellInfo);
+//							ShellInfo shellInfo = new ShellInfo(shellresult.getName(), shellresult.getCommand(), shellresult.getResult());
+//							FifoSenderSocket.put(shellInfo);
 						}
 						
+						// Temporaire
+						ShellInfo shellInfo = new ShellInfo(shellresult.getName(), shellresult.getCommand(), shellresult.getResult());
+						FifoSenderSocket.put(shellInfo);
+					
 
 					}
 				} catch (InterruptedException e) { break;}
@@ -45,7 +52,9 @@ public class ListenFifoShellReceive implements Runnable{
 			
 			
 		}
-		
+		if( Verbose.isEnable() )
+			System.out.println("Thread ShellReceive STOPED");
+
 	}
 
 }

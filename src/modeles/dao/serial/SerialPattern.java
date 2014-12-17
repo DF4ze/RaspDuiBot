@@ -4,6 +4,7 @@ import modeles.dao.communication.beansactions.IAction;
 import modeles.dao.communication.beansinfos.IInfo;
 import modeles.dao.communication.beansinfos.SensorInfo;
 import modeles.dao.communication.beansinfos.StateInfo;
+import modeles.dao.communication.beansinfos.TextInfo;
 
 public class SerialPattern {
 	private static final String codeWork		= "[data]";
@@ -98,7 +99,12 @@ public class SerialPattern {
 					
 				}
 			}
+		}else{
+			info = new TextInfo(sSerial);
 		}
+		
+//		if( Verbose.isEnable() )
+//			System.out.println("serialToIInfo : "+ info);
 		
 		return info;
 	}

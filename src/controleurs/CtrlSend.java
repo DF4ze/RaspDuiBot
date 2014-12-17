@@ -11,9 +11,10 @@ public class CtrlSend {
 	}
 	
 	public void start(){
-		Thread fSocket = new Thread( new ListenFifoShellSend());
-		fSocket.setDaemon(true);
-		fSocket.start();
+		
+		Thread fShell = new Thread( new ListenFifoShellSend());
+		fShell.setDaemon(true);
+		fShell.start();
 		
 		Thread fSerial = new Thread(new ListenFifoSerialSend());
 		fSerial.setDaemon(true);

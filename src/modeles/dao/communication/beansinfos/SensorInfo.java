@@ -2,6 +2,9 @@ package modeles.dao.communication.beansinfos;
 
 public class SensorInfo extends GeneralInfo {
 	
+
+	private static final long serialVersionUID = 1L;
+	
 	private int sensor;
 	private int value;
 

@@ -1,9 +1,11 @@
 package modeles.dao.communication.beansinfos;
 
-import modeles.dao.communication.beanshell.ShellResult;
 
 
 public class ShellInfo extends GeneralInfo {
+	
+
+	private static final long serialVersionUID = 1L;
 	
 	private String name;
 	private String[] command;
@@ -12,11 +14,11 @@ public class ShellInfo extends GeneralInfo {
 	public ShellInfo() {
 	}
 
-	public ShellInfo( ShellResult shellresult ) {
-		setName( shellresult.getName() );
-		setCommand( shellresult.getCommand() );
-		setResult( shellresult.getResult() );
-	}
+//	public ShellInfo( ShellResult shellresult ) {
+//		setName( shellresult.getName() );
+//		setCommand( shellresult.getCommand() );
+//		setResult( shellresult.getResult() );
+//	}
 
 	public ShellInfo( String name, String[] command, String result ) {
 		setName( name );

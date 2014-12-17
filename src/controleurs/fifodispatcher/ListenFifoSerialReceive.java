@@ -12,6 +12,9 @@ public class ListenFifoSerialReceive implements Runnable{
 
 	@Override
 	public void run() {
+		if( Verbose.isEnable() )
+			System.out.println("Thread SerialReceive Launch");
+		
 		while( true ){
 			synchronized( FifoReceiverSerial.getInstance() ) {
 				try {
@@ -32,7 +35,9 @@ public class ListenFifoSerialReceive implements Runnable{
 				}
 			}
 		}
-		
+		if( Verbose.isEnable() )
+			System.out.println("Thread SerialReceive STOPED");
+
 	}
 
 }
