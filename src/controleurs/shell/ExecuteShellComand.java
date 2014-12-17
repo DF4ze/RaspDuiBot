@@ -42,11 +42,16 @@ public class ExecuteShellComand implements Runnable{
 		Process p;
 		try {
 			p = Runtime.getRuntime().exec(command);
-			p.waitFor();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			BufferedReader readerr = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+			p.waitFor();
  
             String line = "";			
 			while ((line = reader.readLine())!= null) {
+				output.append(line + "\n");
+			}
+			line = "";			
+			while ((line = readerr.readLine())!= null) {
 				output.append(line + "\n");
 			}
  

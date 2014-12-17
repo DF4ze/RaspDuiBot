@@ -1,5 +1,8 @@
 package modeles.dao.shell;
 
+import java.util.ArrayList;
+
+import modeles.ServeurModele;
 import modeles.dao.communication.beansactions.ExtraAction;
 import modeles.dao.communication.beansactions.GetStateAction;
 import modeles.dao.communication.beansactions.IAction;
@@ -21,10 +24,18 @@ public class ShellPattern {
 	private static String [] test = {"ping", "-c", "1", "www.google.fr"};
 	
 	public static String stateStreamingName = "State Streaming";
-	private static String [] stateStreaming = {"ps", "-ef", "|grep", "mjpg_streamer"};
+	private static String [] stateStreaming = {"ps", "-eo","cmd"};
+//	private static String [] stateStreaming = {"ps", "-ef", "|grep", "mjpg_streamer"};
+	
+//	public static String stateWebcamName = "State Webcam";
+//	private static String [] stateWebcam = {"ps", "-ef", "|grep", "mjpg_streamer"};
 	
 	public static String stateAlimName = "State Alim";
-	private static String [] stateAlim = {""};
+	public static String stateModePinName = "State Alim - mode pin";
+	private static String [] stateModePin = {"gpio", "-g", "mode", Integer.toString(ServeurModele.DEFAULT_PINALIM), "in"};
+	
+	public static String stateReadPinName = "State Alim - read pin";
+	private static String [] stateReadPin = {"gpio", "-g", "read", Integer.toString(ServeurModele.DEFAULT_PINALIM)};
 	
 	
 	protected ShellPattern() {
@@ -41,6 +52,18 @@ public class ShellPattern {
 		}
 			
 		return shellCmd;
+	}
+	
+	public static void actionToShell( IAction ia, ArrayList<ShellCmd> alShellCmd  ){
+		
+		if( ia instanceof ExtraAction ){
+			alShellCmd.add( extraToShell( (ExtraAction) ia));
+		
+		}else if( ia instanceof GetStateAction ){
+			getStateToShell((GetStateAction)ia, alShellCmd );
+		}
+			
+		
 	}
 	
 	protected static ShellCmd extraToShell( ExtraAction ea ){
@@ -77,13 +100,43 @@ public class ShellPattern {
 			shellCmd.setName(stateStreamingName);
 			
 		}else if( gsa.getType() == IAction.typeAlim ){
-			cmd = stateAlim;
+			int lenght = stateModePin.length + stateReadPin.length;
+			String[] concat = new String [lenght+1];
+			
+			System.arraycopy(stateModePin, 0, concat, 0, stateModePin.length);
+			concat[ stateModePin.length ] = "\n";
+			System.arraycopy(stateReadPin, 0, concat, stateModePin.length+1, stateReadPin.length);
+			
+			cmd = concat;
 			shellCmd.setName(stateAlimName);
 			
 		}
 		
 		shellCmd.setCommand(cmd);
 		return shellCmd;
+	}
+	
+	protected static void getStateToShell( GetStateAction gsa, ArrayList<ShellCmd> shellCmds ){
+		
+		if( gsa.getType() == IAction.typeWebcam ){
+			ShellCmd shellCmd = new ShellCmd();
+			shellCmd.setCommand(stateStreaming);
+			shellCmd.setName(stateStreamingName);
+			shellCmds.add( shellCmd );
+			
+		}else if( gsa.getType() == IAction.typeAlim ){
+			ShellCmd shellCmd = new ShellCmd();
+			
+			shellCmd.setCommand(stateModePin);
+			shellCmd.setName(stateModePinName);
+			shellCmds.add( shellCmd );
+			
+			shellCmd.setCommand(stateReadPin);
+			shellCmd.setName(stateReadPinName);
+			shellCmds.add( shellCmd );
+		}
+		
+		
 	}
 	
 }

@@ -25,7 +25,6 @@ public class SerialLauncher implements Runnable{
 		
 		Thread th1 = new Thread(sr);
 		th1.setDaemon(true);
-		
 		th1.start();
 	}
 

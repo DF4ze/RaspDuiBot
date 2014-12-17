@@ -62,5 +62,8 @@ public class SerialMgr {
 
 	public static void close(){
 		serialPort.close();
+		if( Verbose.isEnable() )
+			System.out.println("Port serie ferme...\nWill exit now...");
+		
 	}
 }

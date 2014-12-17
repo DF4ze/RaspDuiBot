@@ -145,12 +145,15 @@ public class Lanceur {
 	}
 	
 	public static String getHelpMsg(String[] args){
-		return "use : "+args[0]+" [-p/-port PORTNUMBER] [-h/-help] [-v/-verbose 0/1]\n\n"+
+		return "use :  [-p/-port PORTNUMBER] [-h/-help] [-v/-verbose 0/1]\n\n"+
 				"-p/-port PORTNUMBER : doit etre un entier entre "+ServeurModele.PLAGE_MIN +" et " +ServeurModele.PLAGE_MAX+"\n"+
 				"                      port "+ ServeurModele.DEFAUT_PORT+ " par defaut\n"+
 				"-m/-maxcon NBCONNEXION : doit etre un entier positif. Par defaut : "+ServeurModele.DEFAUT_MAXCON+"\n"+
 				"-r/-run : soit 1/true pour forcer le demarrage du serveur ou 0/false pour le desactiver. Par defaut : "+ServeurModele.DEFAUT_STATE+"\n"+
-				"-v/-verbose : soit 1/true pour forcer l'activation ou 0/false pour desactiver la verbosite. "+Verbose.isEnable()+" par defaut\n";
+				"-v/-verbose : soit 1/true pour forcer l'activation ou 0/false pour desactiver la verbosite. "+Verbose.isEnable()+" par defaut\n"+
+				"-sp/-serialport : chemin d'accès au port pour la communication serie. Par defaut : "+ServeurModele.DEFAUT_SERIAL+
+				"-ss/-serialspeed : vitesse de communication du port serie. Par defaut : "+ServeurModele.DEFAUT_SPEED+
+				"-t/-serialtimeout : timeout de connexion au port serie (en ms). Par defaut : "+ServeurModele.DEFAUT_TIMEOUT;
 	}
 
 }

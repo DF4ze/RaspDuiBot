@@ -5,7 +5,7 @@ import java.net.ServerSocket;
 
 import modeles.ServeurModele;
 import modeles.Verbose;
-import modeles.dao.communication.beanfifo.FifoSenderSerial;
+import modeles.dao.communication.beanfifo.FifoReceiverSocket;
 import modeles.dao.communication.beansactions.GetStateAction;
 import modeles.dao.communication.beansocket.SocketNum;
 import controleurs.socket.com.ClientServeur;
@@ -40,7 +40,8 @@ public class AccepterClients implements Runnable {
 				// on attend brievement que les thread Socket soient bien lancés
 				Thread.sleep(100);
 				// on demande l'état du materiel
-				FifoSenderSerial.put(new GetStateAction());
+				//FifoSenderSerial.put(new GetStateAction());
+				FifoReceiverSocket.put(new GetStateAction());
 				
 			}
 

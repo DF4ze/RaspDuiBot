@@ -1,5 +1,7 @@
 package controleurs.fifodispatcher;
 
+import java.util.ArrayList;
+
 import modeles.Verbose;
 import modeles.dao.communication.beanfifo.FifoReceiverSocket;
 import modeles.dao.communication.beanfifo.FifoSenderSerial;
@@ -69,29 +71,42 @@ public class ListenFifoSocketReceive implements Runnable{
 	
 	private void sendToShell( IAction ea ){
 				
-		ShellCmd shellcmd = ShellPattern.actionToShell(ea);
-		FifoSenderShell.put( shellcmd );
-		
-		if( Verbose.isEnable() ){
-			String sCmd = "";
-			for( String txt : shellcmd.getCommand() ){
-				sCmd+= txt+" ";
+		if( ea instanceof GetStateAction ){
+			
+			ArrayList<ShellCmd> alCmd = new ArrayList<ShellCmd>();
+			ShellPattern.actionToShell(ea, alCmd);
+			
+			for( ShellCmd sh : alCmd ){
+				FifoSenderShell.put( sh );
+				if( Verbose.isEnable() ){
+					String sCmd = "";
+					for( String txt : sh.getCommand() ){
+						sCmd+= txt+" ";
+					}
+					System.out.println( "Socket-Shell Send : "+sCmd );
+				}
 			}
-			System.out.println( "Shell Send : "+sCmd );
+		}else{
+			ShellCmd shellcmd = ShellPattern.actionToShell(ea);
+			FifoSenderShell.put( shellcmd );
+			if( Verbose.isEnable() ){
+				String sCmd = "";
+				for( String txt : shellcmd.getCommand() ){
+					sCmd+= txt+" ";
+				}
+				System.out.println( "Socket-Shell Send : "+sCmd );
+			}
 		}
+
 	
 	}
 	
 	private void sendToSerial( IAction ia ){
-		synchronized( FifoSenderSerial.getInstance() ){
-			FifoSenderSerial.put( ia );
-			
-			if( Verbose.isEnable() ){
-				System.out.println( "Socket-Serial Send : "+ia.toString() );
-			}
-			
-			FifoSenderSerial.getInstance().notifyAll();
-		}		
+		FifoSenderSerial.put( ia );
+		
+		if( Verbose.isEnable() ){
+			System.out.println( "Socket-Serial Send : "+ia.toString() );
+		}	
 	}
 	
 }

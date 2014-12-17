@@ -10,5 +10,6 @@ public class ShutDownTreatement extends Thread {
 
 	public void run(){
 		SerialMgr.close();
+		Runtime.getRuntime().halt(0);
 	}
 }

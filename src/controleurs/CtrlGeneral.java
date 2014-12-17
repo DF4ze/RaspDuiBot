@@ -50,7 +50,7 @@ public class CtrlGeneral {
 		cr.start();
 		cs.start();
 		
-		 Runtime.getRuntime().addShutdownHook(new ShutDownTreatement());
+		//Runtime.getRuntime().addShutdownHook(new ShutDownTreatement());
 	}
 
 }

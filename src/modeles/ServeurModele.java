@@ -23,10 +23,11 @@ public class ServeurModele extends Observable {
 	public static final int DEFAUT_MAXCON	= 1;
 	public static final boolean DEFAUT_STATE= true;
 
-//	public static final String DEFAUT_SERIAL= "ttyAMA0";
 	public static final String DEFAUT_SERIAL= "/dev/ttyAMA0";
 	public static final int DEFAUT_SPEED	= 9600;
 	public static final int DEFAUT_TIMEOUT	= 2000;
+	
+	public static final int DEFAULT_PINALIM	= 17;
 	
 	
 	private Integer iPort 			= DEFAUT_PORT;
@@ -35,6 +36,7 @@ public class ServeurModele extends Observable {
 	private String sSerialPort 		= DEFAUT_SERIAL;
 	private int iSerialSpeed 		= DEFAUT_SPEED;
 	private int iSerialTimeOut 		= DEFAUT_TIMEOUT;
+//	private int iPinAlim			= DEFAULT_PINALIM;
 	
 	private Semaphore semaphore;	
 	private HashMap<Integer, Socket> clientsConnected = new HashMap<Integer, Socket>();
@@ -223,7 +225,6 @@ public class ServeurModele extends Observable {
 	public String getsSerialPort() {
 		return sSerialPort;
 	}
-
 	public void setsSerialPort(String sSerialPort) {
 		this.sSerialPort = sSerialPort;
 	}
@@ -231,7 +232,6 @@ public class ServeurModele extends Observable {
 	public int getiSerialSpeed() {
 		return iSerialSpeed;
 	}
-
 	public void setiSerialSpeed(int iSerialSpeed) {
 		this.iSerialSpeed = iSerialSpeed;
 	}
@@ -239,13 +239,15 @@ public class ServeurModele extends Observable {
 	public int getiSerialTimeOut() {
 		return iSerialTimeOut;
 	}
-
 	public void setiSerialTimeOut(int iSerialTimeOut) {
 		this.iSerialTimeOut = iSerialTimeOut;
 	}
 
+//	public int getiPinAlim() {
+//		return iPinAlim;
+//	}
+//	public void setiPinAlim(int iPinAlim) {
+//		this.iPinAlim = iPinAlim;
+//	}
 
-
-
-	
 }
