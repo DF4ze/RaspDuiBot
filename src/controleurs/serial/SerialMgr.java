@@ -19,6 +19,7 @@ public class SerialMgr {
 	private InputStream in;
 	private OutputStream out;
 	private ServeurModele mod;
+	private static SerialPort serialPort = null;
 
 	public SerialMgr( ServeurModele mod ) {
 		this.mod = mod;
@@ -39,7 +40,7 @@ public class SerialMgr {
 			CommPort commPort = portIdentifier.open(this.getClass().getName(), mod.getiSerialTimeOut());
 
 			if (commPort instanceof SerialPort) {
-				SerialPort serialPort = (SerialPort) commPort;
+				serialPort = (SerialPort) commPort;
 				serialPort.setSerialPortParams(mod.getiSerialSpeed(), SerialPort.DATABITS_8,
 						SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
 
@@ -50,16 +51,16 @@ public class SerialMgr {
 				Thread th = new Thread( sl );
 				th.setDaemon(true);
 				th.start();
-
-				//(new Thread(new SerialReader(in))).start();
-				//(new Thread(new SerialWriter(out))).start();
 				
 				if( Verbose.isEnable() )
-					System.out.println("Port serie ("+ mod.getsSerialPort() +")ok");
+					System.out.println("Port serie ("+ mod.getsSerialPort() +") started");
 			} else {
 				System.err.println("Error: Only serial ports are handled by this example.");
 			}
 		}
 	}
 
+	public static void close(){
+		serialPort.close();
+	}
 }
