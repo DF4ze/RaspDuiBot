@@ -11,25 +11,27 @@ import java.util.concurrent.Semaphore;
 
 public class ServeurModele extends Observable {
 
-	public static final int ERREUR_PLAGE 	= 1;
-	public static final int ERREUR_INT 		= 2;
-	public static final int ERREUR_FREE 	= 3;
-	public static final int ERREUR_NEG 		= 4;
+	public static final int ERREUR_PLAGE 		= 1;
+	public static final int ERREUR_INT 			= 2;
+	public static final int ERREUR_FREE 		= 3;
+	public static final int ERREUR_NEG 			= 4;
 	
-	public static final int PLAGE_MIN 		= 1024;
-	public static final int PLAGE_MAX 		= 65535;
+	public static final int PLAGE_MIN 			= 1024;
+	public static final int PLAGE_MAX 			= 65535;
 	
-	public static final int DEFAUT_PORT		= 2009;
-	public static final int DEFAUT_MAXCON	= 1;
-	public static final boolean DEFAUT_STATE= true;
+	public static final int DEFAUT_PORT			= 2009;
+	public static final int DEFAUT_MAXCON		= 1;
+	public static final boolean DEFAUT_STATE	= true;
 
-	public static final String DEFAUT_SERIAL= "/dev/ttyAMA0";
-	public static final int DEFAUT_SPEED	= 115200;
-	public static final int DEFAUT_TIMEOUT	= 2000;
+	public static final boolean DEFAUT_NOSERIAL	= false;
+	public static final String DEFAUT_SERIAL	= "/dev/ttyAMA0";
+	public static final int DEFAUT_SPEED		= 115200;
+	public static final int DEFAUT_TIMEOUT		= 2000;
 	
-	public static final int DEFAULT_PINALIM	= 17;
+	public static final int DEFAULT_PINALIM		= 17;
 	
 	
+	private boolean bNoSerial		= DEFAUT_NOSERIAL;
 	private Integer iPort 			= DEFAUT_PORT;
 	private Integer iMaxConnexion 	= DEFAUT_MAXCON;
 	private boolean bRunning 		= DEFAUT_STATE;
@@ -245,6 +247,14 @@ public class ServeurModele extends Observable {
 	}
 	public void setiSerialTimeOut(int iSerialTimeOut) {
 		this.iSerialTimeOut = iSerialTimeOut;
+	}
+
+	public boolean isbNoSerial() {
+		return bNoSerial;
+	}
+
+	public void setbNoSerial(boolean bNoSerial) {
+		this.bNoSerial = bNoSerial;
 	}
 
 //	public int getiPinAlim() {

@@ -13,6 +13,7 @@ public class Lanceur {
 		String sSerialPort = ServeurModele.DEFAUT_SERIAL;
 		int iSerialSpeed = ServeurModele.DEFAUT_SPEED;
 		int iSerialTimeout = ServeurModele.DEFAUT_TIMEOUT;
+		boolean bNoSerial = false;
 		
 		boolean bOk = true;
 		
@@ -119,6 +120,23 @@ public class Lanceur {
 						iSerialTimeout = Integer.valueOf(args[i+1]);
 						i++;
 					}catch( Exception e ){
+						bOk = false;
+					}
+				}else{
+					bOk = false;
+				}
+				
+			// mode non serial
+			}else if( args[i].equals("-ns") || args[i].equals("-noserial") ){
+				// le parametre est-il présent?
+				if( i+1 < args.length ){
+					if( args[i+1].equals("0") || args[i+1].equals("false")){
+						bNoSerial = false;
+						i++;
+					}else if( args[i+1].equals("1") || args[i+1].equals("true")){
+						bNoSerial = true;
+						i++;
+					}else{
 						bOk = false;
 					}
 				}else{

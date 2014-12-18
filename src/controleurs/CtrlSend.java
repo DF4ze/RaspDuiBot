@@ -1,14 +1,18 @@
 package controleurs;
 
+import modeles.ServeurModele;
 import controleurs.fifodispatcher.ListenFifoSerialSend;
 import controleurs.fifodispatcher.ListenFifoShellSend;
 
 
 public class CtrlSend {
 
-	public CtrlSend() {
-		
+	private ServeurModele mod;
+
+	public CtrlSend( ServeurModele mod ) {
+		this.mod = mod;
 	}
+
 	
 	public void start(){
 		
@@ -16,9 +20,11 @@ public class CtrlSend {
 		fShell.setDaemon(true);
 		fShell.start();
 		
-		Thread fSerial = new Thread(new ListenFifoSerialSend());
-		fSerial.setDaemon(true);
-		fSerial.start();
+		if( !mod.isbNoSerial() ){
+			Thread fSerial = new Thread(new ListenFifoSerialSend());
+			fSerial.setDaemon(true);
+			fSerial.start();
+		}
 	}
 
 	

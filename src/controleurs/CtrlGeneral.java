@@ -26,26 +26,28 @@ public class CtrlGeneral {
 		
 		mod = new ServeurModele(iPort, iMaxCon, isRunning, sSerialPort, iSerialSpeed, iSerialTimeOut);
 		new SocketMgr(mod);
-		serial = new SerialMgr( mod );
-		try {
-			serial.connect();
-		} catch (PortInUseException e) {
-			System.err.println("Port serie deja utilise");
-			//e.printStackTrace();
-		} catch (UnsupportedCommOperationException e) {
-			System.err.println("Port serie : Operation non supportee");
-			
-		} catch (IOException e) {
-			System.err.println("Port serie : Erreur sur le stream");
-			
-		} catch (NoSuchPortException e) {
-			System.err.println("Port serie n'existe pas");
-			
+		
+		if( !mod.isbNoSerial() ){
+			serial = new SerialMgr( mod );
+			try {
+				serial.connect();
+			} catch (PortInUseException e) {
+				System.err.println("Port serie deja utilise");
+				//e.printStackTrace();
+			} catch (UnsupportedCommOperationException e) {
+				System.err.println("Port serie : Operation non supportee");
+				
+			} catch (IOException e) {
+				System.err.println("Port serie : Erreur sur le stream");
+				
+			} catch (NoSuchPortException e) {
+				System.err.println("Port serie n'existe pas");
+				
+			}
 		}
 		
-		
-		CtrlRecep cr = new CtrlRecep();
-		CtrlSend cs = new CtrlSend();
+		CtrlRecep cr = new CtrlRecep( mod );
+		CtrlSend cs = new CtrlSend( mod );
 		
 		cr.start();
 		cs.start();
