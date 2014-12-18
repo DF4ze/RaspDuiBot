@@ -60,7 +60,7 @@ public class CtrlGeneral {
 		ExtraAction ea = new ExtraAction(IAction.typeAlim, IAction.alimStandBy, IAction.Restart);
 		FifoSenderShell.put(ShellPattern.actionToShell(ea));
 		
-		ea = new ExtraAction(IAction.typeAlim, IAction.alimStandBy, IAction.Off);
+		ea = new ExtraAction(IAction.typeAlim, IAction.alimStandBy, IAction.On);
 		FifoSenderShell.put(ShellPattern.actionToShell(ea));
 		
 		

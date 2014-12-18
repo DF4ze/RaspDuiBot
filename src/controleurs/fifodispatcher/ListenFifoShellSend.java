@@ -33,14 +33,14 @@ public class ListenFifoShellSend implements Runnable{
 								ShellResult shellresult = shell.executeCommand();
 								
 								if( shell.isCommandEnded() )
-									System.out.println("Fin de la commande");
+									System.out.print("Fin de la commande ");
 								else
-									System.out.println("Commande n'est pas finie");
+									System.out.print("Commande n'est pas finie ");
 								
 								if( shell.isError() )
-									System.out.println("Commande en erreur");
+									System.out.println("en erreur");
 								else
-									System.out.println("Commande sans erreur");
+									System.out.println("sans erreur");
 								
 								FifoReceiverShell.put(shellresult);
 								if( Verbose.isEnable() )
