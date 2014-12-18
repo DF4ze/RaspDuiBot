@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 import modeles.Verbose;
+import modeles.dao.communication.beanshell.ShellCmd;
+import modeles.dao.communication.beanshell.ShellResult;
 
 public class ExecuteShellComand implements Runnable{
  
@@ -11,6 +13,7 @@ public class ExecuteShellComand implements Runnable{
 	private StringBuffer output = new StringBuffer("");
 	private boolean error = false;
 	private boolean commandEnded = false;
+	private String name = "";
 	
 	public static void main(String[] args) {
 		
@@ -23,9 +26,9 @@ public class ExecuteShellComand implements Runnable{
 		command[5] = "&";
 		
 		ExecuteShellComand obj = new ExecuteShellComand();
-		String output = obj.executeCommand(command);
+		ShellResult sr = obj.executeCommand(command);
  
-		System.out.println(output);
+		System.out.println(sr.getResult());
  		
 	}
 	
@@ -33,11 +36,12 @@ public class ExecuteShellComand implements Runnable{
 		
 	}
  
-	public ExecuteShellComand( String[] cmd ){
-		command = cmd;
+	public ExecuteShellComand( ShellCmd shCmd ){
+		command = shCmd.getCommand();
+		setName(shCmd.getName());
 	}
 	
-	public String executeCommand(String command[]) {
+	public ShellResult executeCommand(String command[]) {
   
 		Process p;
 		try {
@@ -61,19 +65,20 @@ public class ExecuteShellComand implements Runnable{
 			error = true;
 			
 			if( Verbose.isEnable() )
-				e.printStackTrace();
+				System.err.println("erreur Shell : "+e.getMessage());
 		}finally{
 			commandEnded = true;
 			//notifyAll();
 		}
  
-		return output.toString();
+		return new ShellResult( getName(), getCommand(), getOutput(), error);
  
 	}
-	public String executeCommand() {
+	public ShellResult executeCommand() {
+		ShellResult sr = null;
 		if( command.length != 0 )
-			executeCommand(command);
-		return output.toString();
+			sr = executeCommand(command);
+		return sr;
 	}	 
 	@Override
 	public void run() {
@@ -107,6 +112,14 @@ public class ExecuteShellComand implements Runnable{
 
 	protected void setError(boolean error) {
 		this.error = error;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
  
 }

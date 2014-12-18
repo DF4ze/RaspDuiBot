@@ -6,9 +6,13 @@ import gnu.io.UnsupportedCommOperationException;
 
 import java.io.IOException;
 
+import modeles.ServeurModele;
+import modeles.dao.communication.beanfifo.FifoSenderShell;
+import modeles.dao.communication.beansactions.ExtraAction;
+import modeles.dao.communication.beansactions.IAction;
+import modeles.dao.shell.ShellPattern;
 import controleurs.serial.SerialMgr;
 import controleurs.socket.SocketMgr;
-import modeles.ServeurModele;
 
 public class CtrlGeneral {
 	
@@ -51,6 +55,15 @@ public class CtrlGeneral {
 		
 		cr.start();
 		cs.start();
+		
+		// init des pins
+		ExtraAction ea = new ExtraAction(IAction.typeAlim, IAction.alimStandBy, IAction.Restart);
+		FifoSenderShell.put(ShellPattern.actionToShell(ea));
+		
+		ea = new ExtraAction(IAction.typeAlim, IAction.alimStandBy, IAction.Off);
+		FifoSenderShell.put(ShellPattern.actionToShell(ea));
+		
+		
 		
 		//Runtime.getRuntime().addShutdownHook(new ShutDownTreatement());
 	}

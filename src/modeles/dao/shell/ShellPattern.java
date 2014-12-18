@@ -21,21 +21,32 @@ public class ShellPattern {
 	private static String [] stopSteamWCTour = {"pkill", "mjpg_streamer"};
 	
 	public static String testName = "ping Google";
+	@SuppressWarnings("unused")
 	private static String [] test = {"ping", "-c", "1", "www.google.fr"};
 	
 	public static String stateStreamingName = "State Streaming";
 	private static String [] stateStreaming = {"ps", "-eo","cmd"};
 //	private static String [] stateStreaming = {"ps", "-ef", "|grep", "mjpg_streamer"};
 	
+	public static String resetPinAlimName = "Declare pin alim OUT";
+	private static String [] resetPinAlim = {"gpio", "-g", "mode", Integer.toString(ServeurModele.DEFAULT_PINALIM), "out"};
+	
+	public static String pinAlimOnName = "pin alim ON";
+	private static String [] pinAlimOn = {"gpio", "-g", "write", Integer.toString(ServeurModele.DEFAULT_PINALIM), "1"};
+	
+	public static String pinAlimOffName = "pin alim OFF";
+	private static String [] pinAlimOff = {"gpio", "-g", "write", Integer.toString(ServeurModele.DEFAULT_PINALIM), "0"};
+	
+	
 //	public static String stateWebcamName = "State Webcam";
 //	private static String [] stateWebcam = {"ps", "-ef", "|grep", "mjpg_streamer"};
 	
-	public static String stateAlimName = "State Alim";
-	public static String stateModePinName = "State Alim - mode pin";
-	private static String [] stateModePin = {"gpio", "-g", "mode", Integer.toString(ServeurModele.DEFAULT_PINALIM), "in"};
-	
-	public static String stateReadPinName = "State Alim - read pin";
-	private static String [] stateReadPin = {"gpio", "-g", "read", Integer.toString(ServeurModele.DEFAULT_PINALIM)};
+//	public static String stateAlimName = "State Alim";
+//	public static String stateModePinName = "State Alim - mode pin";
+//	private static String [] stateModePin = {"gpio", "-g", "mode", Integer.toString(ServeurModele.DEFAULT_PINALIM), "in"};
+//	
+//	public static String stateReadPinName = "State Alim - read pin";
+//	private static String [] stateReadPin = {"gpio", "-g", "read", Integer.toString(ServeurModele.DEFAULT_PINALIM)};
 	
 	
 	protected ShellPattern() {
@@ -71,20 +82,30 @@ public class ShellPattern {
 		String [] cmd = {};
 		if( ea.getType() == IAction.typeWebcam ){
 			if( ea.getKey() == IAction.webcamTour ){
-				if( ea.getValue() == 0 ){
+				if( ea.getValue() == IAction.Off ){
 					cmd = stopSteamWCTour;
-					
 					shellCmd.setName(stopSteamWCTourName);
+					
 				}else{
 					cmd = startSteamWCTour;
-					
 					shellCmd.setName(startSteamWCTourName);
 				}
 			}
 		}else if( ea.getType() == IAction.typeAlim ){
-			cmd = test;
-			
-			shellCmd.setName(testName);
+			if( ea.getKey() == IAction.alimStandBy ){
+				if( ea.getValue() == IAction.Off ){
+					cmd = pinAlimOn;
+					shellCmd.setName(pinAlimOnName);
+					
+				}else if( ea.getValue() == IAction.On ){
+					cmd = pinAlimOff;
+					shellCmd.setName(pinAlimOffName);
+					
+				}else{
+					cmd = resetPinAlim;
+					shellCmd.setName(resetPinAlimName);
+				}
+			}
 		}
 		
 		shellCmd.setCommand(cmd);
@@ -99,7 +120,7 @@ public class ShellPattern {
 			cmd = stateStreaming;
 			shellCmd.setName(stateStreamingName);
 			
-		}else if( gsa.getType() == IAction.typeAlim ){
+		}/*else if( gsa.getType() == IAction.typeAlim ){
 			int lenght = stateModePin.length + stateReadPin.length;
 			String[] concat = new String [lenght+1];
 			
@@ -110,7 +131,7 @@ public class ShellPattern {
 			cmd = concat;
 			shellCmd.setName(stateAlimName);
 			
-		}
+		}*/
 		
 		shellCmd.setCommand(cmd);
 		return shellCmd;
@@ -124,7 +145,7 @@ public class ShellPattern {
 			shellCmd.setName(stateStreamingName);
 			shellCmds.add( shellCmd );
 			
-		}else if( gsa.getType() == IAction.typeAlim ){
+		}/*else if( gsa.getType() == IAction.typeAlim ){
 			ShellCmd shellCmd = new ShellCmd();
 			
 			shellCmd.setCommand(stateModePin);
@@ -134,7 +155,7 @@ public class ShellPattern {
 			shellCmd.setCommand(stateReadPin);
 			shellCmd.setName(stateReadPinName);
 			shellCmds.add( shellCmd );
-		}
+		}*/
 		
 		
 	}

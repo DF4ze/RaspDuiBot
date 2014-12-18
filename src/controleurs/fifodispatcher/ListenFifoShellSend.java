@@ -25,12 +25,12 @@ public class ListenFifoShellSend implements Runnable{
 					while( FifoSenderShell.getInstance().size() != 0 ){
 						final ShellCmd shellcmd = FifoSenderShell.get();
 				 
-						final ExecuteShellComand shell = new ExecuteShellComand(shellcmd.getCommand());
+						final ExecuteShellComand shell = new ExecuteShellComand(shellcmd);
 						
 						Thread th = new Thread(){
 							public void run(){
-								String output = shell.executeCommand();
-								ShellResult shellresult = new ShellResult(shellcmd.getName(), shellcmd.getCommand(), output);
+
+								ShellResult shellresult = shell.executeCommand();
 								
 								if( shell.isCommandEnded() )
 									System.out.println("Fin de la commande");

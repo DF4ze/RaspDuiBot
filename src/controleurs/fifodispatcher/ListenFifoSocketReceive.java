@@ -2,16 +2,20 @@ package controleurs.fifodispatcher;
 
 import java.util.ArrayList;
 
+import modeles.ServeurModele;
 import modeles.Verbose;
 import modeles.dao.communication.beanfifo.FifoReceiverSocket;
 import modeles.dao.communication.beanfifo.FifoSenderSerial;
 import modeles.dao.communication.beanfifo.FifoSenderShell;
+import modeles.dao.communication.beanfifo.FifoSenderSocket;
 import modeles.dao.communication.beansactions.DirectionAction;
 import modeles.dao.communication.beansactions.ExtraAction;
 import modeles.dao.communication.beansactions.GetStateAction;
 import modeles.dao.communication.beansactions.IAction;
 import modeles.dao.communication.beansactions.TourelleAction;
 import modeles.dao.communication.beanshell.ShellCmd;
+import modeles.dao.communication.beansinfos.IInfo;
+import modeles.dao.communication.beansinfos.StateInfo;
 import modeles.dao.shell.ShellPattern;
 
 public class ListenFifoSocketReceive implements Runnable{
@@ -26,7 +30,14 @@ public class ListenFifoSocketReceive implements Runnable{
 					while( FifoReceiverSocket.getInstance().size() != 0 ){
 						IAction ia = FifoReceiverSocket.get();
 						
-						if( ia instanceof GetStateAction ){
+						 if( ia instanceof TourelleAction || ia instanceof DirectionAction ){
+							sendToSerial(ia);
+							
+						}else if( ia instanceof ExtraAction ){
+							ExtraAction ea = (ExtraAction)ia;
+							extraMgr( ea );
+							
+						}else if( ia instanceof GetStateAction ){
 							GetStateAction gsa = (GetStateAction) ia;
 							
 							if( gsa.getType() == IAction.typeAll){
@@ -34,6 +45,10 @@ public class ListenFifoSocketReceive implements Runnable{
 								
 								sendToShell(new GetStateAction( IAction.typeAlim, IAction.stateAll ));
 								sendToShell(new GetStateAction( IAction.typeWebcam, IAction.stateAll ));
+								
+								ServeurModele sm = ServeurModele.getInstance();
+								StateInfo si = new StateInfo(IInfo.stateAlim, sm.isbPinAlimState());
+								FifoSenderSocket.put(si);
 								//...
 								
 							}else{
@@ -44,13 +59,6 @@ public class ListenFifoSocketReceive implements Runnable{
 							}
 								
 							
-						}else if( ia instanceof ExtraAction ){
-							ExtraAction ea = (ExtraAction)ia;
-							
-							extraMgr( ea );
-							
-						}else if( ia instanceof TourelleAction || ia instanceof DirectionAction ){
-							sendToSerial(ia);
 						}
 					}
 				} catch (InterruptedException e) { break; }

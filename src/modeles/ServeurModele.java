@@ -39,11 +39,13 @@ public class ServeurModele extends Observable {
 	private int iSerialSpeed 		= DEFAUT_SPEED;
 	private int iSerialTimeOut 		= DEFAUT_TIMEOUT;
 //	private int iPinAlim			= DEFAULT_PINALIM;
+	private boolean bPinAlimState	= false;
 	
 	private Semaphore semaphore;	
 	private HashMap<Integer, Socket> clientsConnected = new HashMap<Integer, Socket>();
 	private int numClient = 0;
 	
+	private static ServeurModele me = null;
 
 
 	public ServeurModele(Integer iPort, Integer iMaxConnexion, boolean isRunning, String sSerialPort, int iSerialSpeed, int iSerialTimeOut, boolean bNoSerial) {
@@ -56,6 +58,14 @@ public class ServeurModele extends Observable {
 		setbNoSerial(bNoSerial);
 		 
 		setSemaphore(new Semaphore( getiMaxConnexion() ));
+		
+		me = this;
+	}
+	
+	public static ServeurModele getInstance(){
+		if( me == null)
+			me = new ServeurModele(DEFAUT_PORT, DEFAUT_MAXCON, DEFAUT_STATE, DEFAUT_SERIAL, DEFAUT_SPEED, DEFAUT_TIMEOUT, DEFAUT_NOSERIAL);
+		return me;
 	}
 
 	public HashMap<Integer, Socket> getClientsConnected(){
@@ -256,6 +266,14 @@ public class ServeurModele extends Observable {
 
 	public void setbNoSerial(boolean bNoSerial) {
 		this.bNoSerial = bNoSerial;
+	}
+
+	public boolean isbPinAlimState() {
+		return bPinAlimState;
+	}
+
+	public void setbPinAlimState(boolean bPinAlimState) {
+		this.bPinAlimState = bPinAlimState;
 	}
 
 //	public int getiPinAlim() {

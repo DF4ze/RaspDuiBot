@@ -27,8 +27,8 @@ public interface IAction extends Serializable {
 	final static int Light 	= 3;
 	
 	// Extra-Webcam
+	final static int Off		= 0;
 	final static int On 		= 1;
-	final static int Off		= 2;
 	final static int Restart	= 3;
 	
 	final static int webcamTour	= 1;

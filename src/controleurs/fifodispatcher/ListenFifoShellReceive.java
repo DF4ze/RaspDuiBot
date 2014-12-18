@@ -1,16 +1,18 @@
 package controleurs.fifodispatcher;
 
+import modeles.ServeurModele;
 import modeles.Verbose;
 import modeles.dao.communication.beanfifo.FifoReceiverShell;
 import modeles.dao.communication.beanfifo.FifoSenderSocket;
 import modeles.dao.communication.beanshell.ShellResult;
 import modeles.dao.communication.beansinfos.ShellInfo;
+import modeles.dao.communication.beansinfos.StateInfo;
 import modeles.dao.shell.ShellPattern;
 
 public class ListenFifoShellReceive implements Runnable{
 
 	public ListenFifoShellReceive()  {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	@Override
@@ -31,12 +33,33 @@ public class ListenFifoShellReceive implements Runnable{
 							// ici on devrait checker si le stream a bien démarré
 							// parsing du resultat de la ligne de cmd
 							
-						}else if( shellresult.getName().equals( ShellPattern.stateAlimName ) ){
-							;
-							// vérification d'un pin du Rasp.
-							// parsing du resultat de la ligne de cmd
+						}else if( shellresult.getName().equals( ShellPattern.pinAlimOffName) ){
+							if( !shellresult.isError() ){
+								ServeurModele sm = ServeurModele.getInstance();
+								sm.setbPinAlimState(true);
+								
+								StateInfo si = new StateInfo(StateInfo.stateAlim, true);
+								FifoSenderSocket.put(si);
+							}else{
+								StateInfo si = new StateInfo(StateInfo.stateAlim, false);
+								FifoSenderSocket.put(si);								
+							}
+								
+						}else if( shellresult.getName().equals( ShellPattern.pinAlimOnName) ){
+							if( !shellresult.isError() ){
+								ServeurModele sm = ServeurModele.getInstance();
+								sm.setbPinAlimState(false);
+								
+								StateInfo si = new StateInfo(StateInfo.stateAlim, false);
+								FifoSenderSocket.put(si);
+							}else{
+								StateInfo si = new StateInfo(StateInfo.stateAlim, true);
+								FifoSenderSocket.put(si);								
+							}
 						
-						}else{
+						}else
+						{
+							;
 //							ShellInfo shellInfo = new ShellInfo(shellresult.getName(), shellresult.getCommand(), shellresult.getResult());
 //							FifoSenderSocket.put(shellInfo);
 						}
