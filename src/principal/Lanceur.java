@@ -158,7 +158,7 @@ public class Lanceur {
 		
 		// Lancement de l'application
 		if( bOk ){
-			new CtrlGeneral( iPort, iMaxCon, isRunning, sSerialPort, iSerialSpeed, iSerialTimeout );
+			new CtrlGeneral( iPort, iMaxCon, isRunning, sSerialPort, iSerialSpeed, iSerialTimeout, bNoSerial );
 		}
 	}
 	

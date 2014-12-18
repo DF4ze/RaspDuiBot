@@ -46,13 +46,14 @@ public class ServeurModele extends Observable {
 	
 
 
-	public ServeurModele(Integer iPort, Integer iMaxConnexion, boolean isRunning, String sSerialPort, int iSerialSpeed, int iSerialTimeOut) {
+	public ServeurModele(Integer iPort, Integer iMaxConnexion, boolean isRunning, String sSerialPort, int iSerialSpeed, int iSerialTimeOut, boolean bNoSerial) {
 		setiPort(iPort);
 		setiMaxConnexion(iMaxConnexion);
 		setRunning(isRunning);
 		setsSerialPort(sSerialPort);
 		setiSerialSpeed(iSerialSpeed);
 		setiSerialTimeOut(iSerialTimeOut);
+		setbNoSerial(bNoSerial);
 		 
 		setSemaphore(new Semaphore( getiMaxConnexion() ));
 	}
