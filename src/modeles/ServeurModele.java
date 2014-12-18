@@ -24,7 +24,7 @@ public class ServeurModele extends Observable {
 	public static final boolean DEFAUT_STATE= true;
 
 	public static final String DEFAUT_SERIAL= "/dev/ttyAMA0";
-	public static final int DEFAUT_SPEED	= 9600;
+	public static final int DEFAUT_SPEED	= 115200;
 	public static final int DEFAUT_TIMEOUT	= 2000;
 	
 	public static final int DEFAULT_PINALIM	= 17;
@@ -55,6 +55,10 @@ public class ServeurModele extends Observable {
 		setSemaphore(new Semaphore( getiMaxConnexion() ));
 	}
 
+	public HashMap<Integer, Socket> getClientsConnected(){
+		return clientsConnected;
+	}
+	
 	public int addClient( Socket client ){
 		numClient++;
 		clientsConnected.put(numClient, client);

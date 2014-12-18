@@ -54,6 +54,7 @@ public class Reception implements Runnable {
 					try {
 						mySocket.getSocket().close();
 					} catch (IOException e1) {}
+					
 					break;
 		    	}
 
