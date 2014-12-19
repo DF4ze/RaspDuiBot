@@ -19,7 +19,9 @@ public class SerialMgr {
 	private InputStream in;
 	private OutputStream out;
 	private ServeurModele mod;
-	private static SerialPort serialPort = null;
+	private Thread th;
+	private SerialPort serialPort = null;
+	private static SerialMgr me = null;
 
 	public SerialMgr( ServeurModele mod ) {
 		this.mod = mod;
@@ -48,7 +50,7 @@ public class SerialMgr {
 				out = serialPort.getOutputStream();
 				
 				SerialLauncher sl = new SerialLauncher(in, out);
-				Thread th = new Thread( sl );
+				th = new Thread( sl );
 				th.setDaemon(true);
 				th.start();
 				
@@ -60,10 +62,31 @@ public class SerialMgr {
 		}
 	}
 
-	public static void close(){
-		serialPort.close();
-		if( Verbose.isEnable() )
-			System.out.println("Port serie ferme...\nWill exit now...");
+	public static boolean close(){
+		boolean isOk = true;
+		if( me != null && me.serialPort != null){
+			me.serialPort.close();
+			me.th.interrupt();
+			
+			if( Verbose.isEnable() )
+				System.out.println("Port serie ferme...");
+		}else
+			isOk = false;
+
 		
+		return isOk;
+	}	
+	public static boolean restart() throws PortInUseException, UnsupportedCommOperationException, IOException, NoSuchPortException{
+		boolean isOk = true;
+		if( me != null ){
+			me.connect();
+			
+			if( Verbose.isEnable() )
+				System.out.println("Port serie redemarre...");
+		}else
+			isOk = false;
+		
+		
+		return isOk;
 	}
 }

@@ -57,16 +57,33 @@ public class ListenFifoShellReceive implements Runnable{
 								FifoSenderSocket.put(si);								
 							}
 						
+						}else if( shellresult.getName().equals( ShellPattern.pinAlimStateName) ){
+							if( !shellresult.isError() ){
+								
+								int istate = -1;
+								try{ 
+									istate = Integer.valueOf(shellresult.getResult());	
+								}catch( Exception e ){}
+								
+								boolean bstate = false;
+								if( istate > 0 )
+									bstate = true;
+								StateInfo si = new StateInfo(StateInfo.stateAlim, bstate);
+								FifoSenderSocket.put(si);
+							}else{
+								StateInfo si = new StateInfo(StateInfo.stateAlim, false);
+								FifoSenderSocket.put(si);								
+							}
+						
 						}else
 						{
-							;
-//							ShellInfo shellInfo = new ShellInfo(shellresult.getName(), shellresult.getCommand(), shellresult.getResult());
-//							FifoSenderSocket.put(shellInfo);
+							ShellInfo shellInfo = new ShellInfo(shellresult.getName(), shellresult.getCommand(), shellresult.getResult());
+							FifoSenderSocket.put(shellInfo);
 						}
 						
 						// Temporaire
-						ShellInfo shellInfo = new ShellInfo(shellresult.getName(), shellresult.getCommand(), shellresult.getResult());
-						FifoSenderSocket.put(shellInfo);
+//						ShellInfo shellInfo = new ShellInfo(shellresult.getName(), shellresult.getCommand(), shellresult.getResult());
+//						FifoSenderSocket.put(shellInfo);
 					
 
 					}
