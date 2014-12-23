@@ -54,7 +54,7 @@ public class AccepterClients implements Runnable {
 	
 	private void onExit( Exception e ){
 		if( Verbose.isEnable() ){
-			e.printStackTrace();
+			System.err.println( "Fermeture du thread AccepterClient : "+e.getMessage() );
 		}
 		
 		mod.delAllClient();

@@ -2,21 +2,19 @@ package controleurs.fifodispatcher;
 
 import java.util.ArrayList;
 
+
 import controleurs.CtrlGeneral;
 import modeles.ServeurModele;
 import modeles.Verbose;
 import modeles.dao.communication.beanfifo.FifoReceiverSocket;
 import modeles.dao.communication.beanfifo.FifoSenderSerial;
 import modeles.dao.communication.beanfifo.FifoSenderShell;
-import modeles.dao.communication.beanfifo.FifoSenderSocket;
 import modeles.dao.communication.beansactions.DirectionAction;
 import modeles.dao.communication.beansactions.ExtraAction;
 import modeles.dao.communication.beansactions.GetStateAction;
 import modeles.dao.communication.beansactions.IAction;
 import modeles.dao.communication.beansactions.TourelleAction;
 import modeles.dao.communication.beanshell.ShellCmd;
-import modeles.dao.communication.beansinfos.IInfo;
-import modeles.dao.communication.beansinfos.StateInfo;
 import modeles.dao.shell.ShellPattern;
 
 public class ListenFifoSocketReceive implements Runnable{
@@ -47,9 +45,9 @@ public class ListenFifoSocketReceive implements Runnable{
 								sendToShell(new GetStateAction( IAction.typeAlim, IAction.stateAll ));
 								sendToShell(new GetStateAction( IAction.typeWebcam, IAction.stateAll ));
 								
-								ServeurModele sm = ServeurModele.getInstance();
-								StateInfo si = new StateInfo(IInfo.stateAlim, sm.isbPinAlimState());
-								FifoSenderSocket.put(si);
+//								ServeurModele sm = ServeurModele.getInstance();
+//								StateInfo si = new StateInfo(IInfo.stateAlim, sm.isbPinAlimState());
+//								FifoSenderSocket.put(si);
 								//...
 								
 							}else{
@@ -75,6 +73,18 @@ public class ListenFifoSocketReceive implements Runnable{
 	
 	private void extraMgr( ExtraAction ea ){
 		if( ea.getType() == IAction.typeAlim || ea.getType() == IAction.typeWebcam ){
+			if( ea.getType() == IAction.typeAlim )
+				if( ea.getKey() == IAction.alimStandBy )
+					if( ea.getValue() == IAction.Off ){
+						//Ouvrir le port serie
+					}else{
+						// fermer le port serie
+						// au final ca n'est pas obligatoire ...
+						// sur le port serie filaire le port peut rester ouvert et l'arduino rebooter sans que ca bloque
+						// par contre sur le port USB ... jsp
+					}
+						
+						
 			sendToShell(ea);
 			
 			if( ea.getType() == IAction.typeAlim && ea.getKey() == IAction.alimStandBy && ea.getValue() == IAction.Off )

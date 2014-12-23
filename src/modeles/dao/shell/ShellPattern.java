@@ -37,6 +37,9 @@ public class ShellPattern {
 	public static String pinAlimOffName = "pin alim OFF";
 	private static String [] pinAlimOff = {"gpio", "-g", "write", Integer.toString(ServeurModele.DEFAULT_PINALIM), "0"};
 	
+	public static String pinAlimStateName = "pin State";
+	private static String [] pinAlimState = {"gpio", "-g", "read", Integer.toString(ServeurModele.DEFAULT_PINALIM)};
+	
 	
 //	public static String stateWebcamName = "State Webcam";
 //	private static String [] stateWebcam = {"ps", "-ef", "|grep", "mjpg_streamer"};
@@ -120,18 +123,11 @@ public class ShellPattern {
 			cmd = stateStreaming;
 			shellCmd.setName(stateStreamingName);
 			
-		}/*else if( gsa.getType() == IAction.typeAlim ){
-			int lenght = stateModePin.length + stateReadPin.length;
-			String[] concat = new String [lenght+1];
+		}else if( gsa.getType() == IAction.typeAlim ){
+			cmd = pinAlimState;
+			shellCmd.setName(pinAlimStateName);
 			
-			System.arraycopy(stateModePin, 0, concat, 0, stateModePin.length);
-			concat[ stateModePin.length ] = "\n";
-			System.arraycopy(stateReadPin, 0, concat, stateModePin.length+1, stateReadPin.length);
-			
-			cmd = concat;
-			shellCmd.setName(stateAlimName);
-			
-		}*/
+		}
 		
 		shellCmd.setCommand(cmd);
 		return shellCmd;
