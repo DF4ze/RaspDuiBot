@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 
 import modeles.ServeurModele;
 import modeles.dao.communication.beanfifo.FifoSenderSocket;
+import modeles.dao.communication.beansinfos.IInfo;
 
 public class Emission implements Runnable {
 
@@ -38,13 +39,15 @@ public class Emission implements Runnable {
 						for( Entry<Integer, Socket> client : hmClients.entrySet() ){
 							Socket sock = (Socket)(client.getValue());
 							if( sock.isConnected() ){
+								IInfo ii = FifoSenderSocket.get();
 								try {
 									ObjectOutputStream out = new ObjectOutputStream( sock.getOutputStream());
-									out.writeObject(FifoSenderSocket.get());
+									out.writeObject( ii );
 									out.flush();
 								
 								} catch (IOException e) {
-									System.err.println("Erreur d'ecriture dans le Socket");
+									System.err.println("Erreur d'ecriture dans le Socket : objet : "+ii);
+									break;
 								}
 							}
 						}

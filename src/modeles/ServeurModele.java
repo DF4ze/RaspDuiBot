@@ -25,7 +25,7 @@ public class ServeurModele extends Observable {
 
 	public static final boolean DEFAUT_NOSERIAL	= false;
 	public static final String DEFAUT_SERIAL	= "/dev/ttyAMA0";
-	public static final int DEFAUT_SPEED		= 115200;
+	public static final int DEFAUT_SPEED		= 57600;
 	public static final int DEFAUT_TIMEOUT		= 2000;
 	
 	public static final int DEFAULT_PINALIM		= 17;
@@ -44,6 +44,7 @@ public class ServeurModele extends Observable {
 	private Semaphore semaphore;	
 	private HashMap<Integer, Socket> clientsConnected = new HashMap<Integer, Socket>();
 	private int numClient = 0;
+	private static long cmdReceptLastMinute = 0; 
 	
 	private static ServeurModele me = null;
 
@@ -274,6 +275,14 @@ public class ServeurModele extends Observable {
 
 	public void setbPinAlimState(boolean bPinAlimState) {
 		this.bPinAlimState = bPinAlimState;
+	}
+
+	public static long getCmdReceptLastMinute() {
+		return cmdReceptLastMinute;
+	}
+
+	public static void setCmdReceptLastMinute(long cmdReceptLastMinute) {
+		ServeurModele.cmdReceptLastMinute = cmdReceptLastMinute;
 	}
 
 //	public int getiPinAlim() {

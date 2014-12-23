@@ -2,6 +2,7 @@ package controleurs.fifodispatcher;
 
 import java.util.ArrayList;
 
+import controleurs.CtrlGeneral;
 import modeles.ServeurModele;
 import modeles.Verbose;
 import modeles.dao.communication.beanfifo.FifoReceiverSocket;
@@ -60,6 +61,8 @@ public class ListenFifoSocketReceive implements Runnable{
 								
 							
 						}
+						 
+						 ServeurModele.setCmdReceptLastMinute( ServeurModele.getCmdReceptLastMinute() +1);
 					}
 				} catch (InterruptedException e) { break; }
 			}
@@ -73,6 +76,13 @@ public class ListenFifoSocketReceive implements Runnable{
 	private void extraMgr( ExtraAction ea ){
 		if( ea.getType() == IAction.typeAlim || ea.getType() == IAction.typeWebcam ){
 			sendToShell(ea);
+			
+			if( ea.getType() == IAction.typeAlim && ea.getKey() == IAction.alimStandBy && ea.getValue() == IAction.Off )
+				CtrlGeneral.startTimerVeille();
+			
+			if( ea.getType() == IAction.typeAlim && ea.getKey() == IAction.alimStandBy && ea.getValue() == IAction.On )
+				CtrlGeneral.stopTimerVeille();
+			
 		}else
 			FifoSenderSerial.put(ea);
 	}
