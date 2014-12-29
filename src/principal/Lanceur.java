@@ -167,11 +167,12 @@ public class Lanceur {
 				"-p/-port PORTNUMBER : doit etre un entier entre "+ServeurModele.PLAGE_MIN +" et " +ServeurModele.PLAGE_MAX+"\n"+
 				"                      port "+ ServeurModele.DEFAUT_PORT+ " par defaut\n"+
 				"-m/-maxcon NBCONNEXION : doit etre un entier positif. Par defaut : "+ServeurModele.DEFAUT_MAXCON+"\n"+
-				"-r/-run : soit 1/true pour forcer le demarrage du serveur ou 0/false pour le desactiver. Par defaut : "+ServeurModele.DEFAUT_STATE+"\n"+
-				"-v/-verbose : soit 1/true pour forcer l'activation ou 0/false pour desactiver la verbosite. "+Verbose.isEnable()+" par defaut\n"+
-				"-sp/-serialport : chemin d'accès au port pour la communication serie. Par defaut : "+ServeurModele.DEFAUT_SERIAL+
-				"-ss/-serialspeed : vitesse de communication du port serie. Par defaut : "+ServeurModele.DEFAUT_SPEED+
-				"-t/-serialtimeout : timeout de connexion au port serie (en ms). Par defaut : "+ServeurModele.DEFAUT_TIMEOUT;
+				"-r/-run TRUE/FALSE: soit 1/true pour forcer le demarrage du serveur ou 0/false pour le desactiver. Par defaut : "+ServeurModele.DEFAUT_STATE+"\n"+
+				"-v/-verbose TRUE/FALSE: soit 1/true pour forcer l'activation ou 0/false pour desactiver la verbosite. "+Verbose.isEnable()+" par defaut\n"+
+				"-sp/-serialport CHEMIN : chemin d'accès au port pour la communication serie. Par defaut : "+ServeurModele.DEFAUT_SERIAL+"\n"+
+				"-ss/-serialspeed VITESSE : vitesse de communication du port serie. Par defaut : "+ServeurModele.DEFAUT_SPEED+"\n"+
+				"-t/-serialtimeout MILLIS : timeout de connexion au port serie (en ms). Par defaut : "+ServeurModele.DEFAUT_TIMEOUT+"\n"+
+				"-ns/-noserial TRUE/FALSE: desactive le port serie. Par defaut : FALSE"+"\n";
 	}
 
 }
