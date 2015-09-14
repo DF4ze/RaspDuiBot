@@ -3,6 +3,7 @@ package modeles.dao.serial;
 import modeles.dao.communication.beansactions.IAction;
 import modeles.dao.communication.beansinfos.IInfo;
 import modeles.dao.communication.beansinfos.SensorInfo;
+import modeles.dao.communication.beansinfos.SensorInfoDist;
 import modeles.dao.communication.beansinfos.StateInfo;
 import modeles.dao.communication.beansinfos.TextInfo;
 
@@ -45,22 +46,36 @@ public class SerialPattern {
 		IInfo info = null;
 		
 		if( sSerial.indexOf(codeWork) != -1 ){
-			sSerial.replace(codeWork, "");
+			sSerial = sSerial.replace(codeWork, "");
 			
 			
 			if( sSerial.indexOf(codeSensor) != -1 ){
 				int sensor = -1;
-				sSerial.replace(codeSensor, "");
+				sSerial = sSerial.replace(codeSensor, "");
 				if( sSerial.indexOf(codeSensDist) != -1 ){
-					sSerial.replace(codeSensDist, "");
-					sensor = IInfo.sensorDistance;
+					sSerial = sSerial.replace(codeSensDist, "");
+					String [] values = sSerial.split("\\.");
+					
+					if( values.length == 2 ){
+						try{
+							//System.out.println( "value0 : "+values[0]+" value1 : "+values[1] );
+							
+							info = new SensorInfoDist(IInfo.sensorDistance, Integer.parseInt( values[0] ), Integer.parseInt( values[1] ));
+							
+						}catch( Exception e ){
+							System.err.println( "La valeur du capteur "+sensor+" ne peut pas etre parsee" );
+						}
+					}
+					
+					
+					//sensor = IInfo.sensorDistance;
 					
 				}else if( sSerial.indexOf(codeSensLum) != -1 ){
-					sSerial.replace(codeSensLum, "");
+					sSerial = sSerial.replace(codeSensLum, "");
 					sensor = IInfo.sensorLum;
 					
 				}else if( sSerial.indexOf(codeSensTemp) != -1 ){
-					sSerial.replace(codeSensTemp, "");
+					sSerial = sSerial.replace(codeSensTemp, "");
 					sensor = IInfo.sensorTemp;
 				}
 				
@@ -73,19 +88,19 @@ public class SerialPattern {
 				}
 			
 			}else if(sSerial.indexOf(codeLight) != -1){
-				sSerial.replace(codeLight, "");
+				sSerial = sSerial.replace(codeLight, "");
 				
 				int matos = -1;
 				if( sSerial.indexOf(codeLightLazer) != -1){
-					sSerial.replace(codeLightLazer, "");
+					sSerial = sSerial.replace(codeLightLazer, "");
 					matos = IInfo.stateLazer;
 					
 				}else if( sSerial.indexOf(codeLightSpot) != -1){
-					sSerial.replace(codeLightSpot, "");
+					sSerial = sSerial.replace(codeLightSpot, "");
 					matos = IInfo.stateLight;
 					
 				}else if( sSerial.indexOf(codeLightStrob) != -1){
-					sSerial.replace(codeLightStrob, "");
+					sSerial = sSerial.replace(codeLightStrob, "");
 					matos = IInfo.stateStrob;
 					
 				}
