@@ -6,12 +6,12 @@ public class SensorInfo extends GeneralInfo {
 	private static final long serialVersionUID = 1L;
 	
 	private int sensor;
-	private int value;
+	private float value;
 
 	public SensorInfo() {
 		
 	}
-	public SensorInfo( int sensor, int value ) {
+	public SensorInfo( int sensor, float value ) {
 		setSensor(sensor);
 		setValue(value);
 	}
@@ -28,10 +28,10 @@ public class SensorInfo extends GeneralInfo {
 		this.sensor = sensor;
 	}
 
-	public int getValue() {
+	public float getValue() {
 		return value;
 	}
-	public void setValue(int value) {
+	public void setValue(float value) {
 		this.value = value;
 	}
 

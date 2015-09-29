@@ -14,6 +14,7 @@ public class SerialPattern {
 	private static final String codeSensDist 	= "[distance]";
 	private static final String codeSensLum 	= "[lumiere]";
 	private static final String codeSensTemp 	= "[temperature]";
+	private static final String codeSensVolt 	= "[voltage]";
 
 	private static final String codeLight		= "[light]";
 	private static final String codeLightSpot 	= "[spot]";
@@ -77,11 +78,15 @@ public class SerialPattern {
 				}else if( sSerial.indexOf(codeSensTemp) != -1 ){
 					sSerial = sSerial.replace(codeSensTemp, "");
 					sensor = IInfo.sensorTemp;
+					
+				}else if( sSerial.indexOf(codeSensVolt) != -1 ){
+					sSerial = sSerial.replace(codeSensVolt, "");
+					sensor = IInfo.sensorVolt;
 				}
 				
 				if( sensor != -1 ){
 					try{
-						info = new SensorInfo( sensor, Integer.parseInt(sSerial) );
+						info = new SensorInfo( sensor, Float.parseFloat(sSerial)/*Integer.parseInt(sSerial)*/ );
 					}catch( Exception e ){
 						System.err.println( "La valeur du capteur "+sensor+" ne peut pas etre parsee" );
 					}
