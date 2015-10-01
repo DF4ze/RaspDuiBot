@@ -13,6 +13,7 @@ public interface IAction extends Serializable {
 	final int modeServo		= 2;
 	final int modeExtra		= 3;
 	final int modeState		= 4;
+	final int modeSpeak		= 5;
 	
 	//// Extras
 	final int typeAll		= 0;

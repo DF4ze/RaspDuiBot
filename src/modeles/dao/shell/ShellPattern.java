@@ -6,6 +6,7 @@ import modeles.ServeurModele;
 import modeles.dao.communication.beansactions.ExtraAction;
 import modeles.dao.communication.beansactions.GetStateAction;
 import modeles.dao.communication.beansactions.IAction;
+import modeles.dao.communication.beansactions.SpeakAction;
 import modeles.dao.communication.beanshell.ShellCmd;
 
 public class ShellPattern {
@@ -40,6 +41,8 @@ public class ShellPattern {
 	public static String pinAlimStateName = "pin State";
 	private static String [] pinAlimState = {"gpio", "-g", "read", Integer.toString(ServeurModele.DEFAULT_PINALIM)};
 	
+	public static String speakName = "Speaking";
+	private static String [] speak = {"/usr/bin/espeak", "-vfr+15", "-k20", "-s150", "Test TTS"};
 	
 //	public static String stateWebcamName = "State Webcam";
 //	private static String [] stateWebcam = {"ps", "-ef", "|grep", "mjpg_streamer"};
@@ -63,6 +66,9 @@ public class ShellPattern {
 		
 		}else if( ia instanceof GetStateAction ){
 			shellCmd = getStateToShell((GetStateAction)ia);
+			
+		}else if( ia instanceof SpeakAction ){
+			shellCmd = speakToShell( (SpeakAction)ia );
 		}
 			
 		return shellCmd;
@@ -152,8 +158,43 @@ public class ShellPattern {
 			shellCmd.setName(stateReadPinName);
 			shellCmds.add( shellCmd );
 		}*/
-		
-		
 	}
 	
+	protected static ShellCmd speakToShell( SpeakAction sa ){
+		// {"/usr/bin/espeak", "-vfr+15", "-k20", "-s150", "Test TTS"}
+		
+		ShellCmd shellCmd = new ShellCmd();
+		shellCmd = new ShellCmd();
+		shellCmd.setName(speakName);
+		
+		switch( sa.getVoix() ){
+		case SpeakAction.voixFemme :
+			speak[1] = "-vfr+15";
+			break;
+		case SpeakAction.voixHomme :
+			speak[1] = "-vfr+1";
+			break;
+		default :
+			speak[1] = "-vfr+15";
+		}
+		
+		switch( sa.getVitesse() ){
+		case SpeakAction.voixRapide :
+			speak[3] = "-s250";
+			break;
+		case SpeakAction.voixMoyenne :
+			speak[3] = "-s150";
+			break;
+		case SpeakAction.voixLente :
+			speak[3] = "-s50";
+			break;
+		default :
+			speak[3] = "-s150";
+		}
+		
+		speak[4] = sa.getAction();
+		shellCmd.setCommand(speak);
+		
+		return shellCmd;
+	}
 }

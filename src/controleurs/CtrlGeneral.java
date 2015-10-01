@@ -14,6 +14,7 @@ import modeles.dao.communication.beanfifo.FifoReceiverSocket;
 import modeles.dao.communication.beanfifo.FifoSenderShell;
 import modeles.dao.communication.beansactions.ExtraAction;
 import modeles.dao.communication.beansactions.IAction;
+import modeles.dao.communication.beansactions.SpeakAction;
 import modeles.dao.shell.ShellPattern;
 import controleurs.serial.SerialMgr;
 import controleurs.socket.SocketMgr;
@@ -69,6 +70,9 @@ public class CtrlGeneral {
 		ea = new ExtraAction(IAction.typeAlim, IAction.alimStandBy, IAction.On);
 		FifoSenderShell.put(ShellPattern.actionToShell(ea));
 		
+		// envoi d'un son de bienvenue
+		SpeakAction sa = new SpeakAction("Bonjour! Je m'appelle Arduibote. Je me prépare, veuillez patienter.");
+		FifoSenderShell.put( ShellPattern.actionToShell(sa) );
 		
 		//Runtime.getRuntime().addShutdownHook(new ShutDownTreatement());
 	}
