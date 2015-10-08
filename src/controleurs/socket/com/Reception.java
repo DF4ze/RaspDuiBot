@@ -34,8 +34,9 @@ public class Reception implements Runnable {
 		        	IAction action = (IAction)Obj;
 		        	
 		        	if( Verbose.isEnable() )
-		        		System.out.println("Socket "+mySocket.getNumber()+" : "+ action);		        	
-		        		FifoReceiverSocket.put(action);
+		        		System.out.println("Socket "+mySocket.getNumber()+" : "+ action);
+		        	
+		        	FifoReceiverSocket.put(action);
 		        	
 		        }else
 		        	System.out.println("Socket "+mySocket.getNumber()+" : "+"ORNI : Object Received None Identified ! ");
@@ -64,7 +65,7 @@ public class Reception implements Runnable {
 				break;
 			} catch (ClassNotFoundException e) {
 				if( Verbose.isEnable() )
-					System.err.println("Erreur de lecture du socket : "+e.getMessage());
+					System.out.println("Erreur de lecture du socket : "+e.getMessage());
 			}
 		}
 	}

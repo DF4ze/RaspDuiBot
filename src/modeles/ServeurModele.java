@@ -43,9 +43,12 @@ public class ServeurModele extends Observable {
 	
 	private Semaphore semaphore;	
 	private HashMap<Integer, Socket> clientsConnected = new HashMap<Integer, Socket>();
-	private int numClient = 0;
+	private int numClient 					= 0;
 	private static long cmdReceptLastMinute = 0; 
 	
+	private int volumePrCent;
+	private boolean volumeMute;
+		
 	private static ServeurModele me = null;
 
 
@@ -284,6 +287,23 @@ public class ServeurModele extends Observable {
 	public static void setCmdReceptLastMinute(long cmdReceptLastMinute) {
 		ServeurModele.cmdReceptLastMinute = cmdReceptLastMinute;
 	}
+
+	public int getVolume() {
+		return volumePrCent;
+	}
+
+	public void setVolume(int volume) {
+		this.volumePrCent = volume;
+	}
+
+	public boolean isVolumeMute() {
+		return volumeMute;
+	}
+
+	public void setVolumeMute(boolean volumeMute) {
+		this.volumeMute = volumeMute;
+	}
+
 
 //	public int getiPinAlim() {
 //		return iPinAlim;

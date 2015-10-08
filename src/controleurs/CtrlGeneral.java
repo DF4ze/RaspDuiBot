@@ -16,6 +16,7 @@ import modeles.dao.communication.beansactions.ExtraAction;
 import modeles.dao.communication.beansactions.IAction;
 import modeles.dao.communication.beansactions.SpeakAction;
 import modeles.dao.shell.ShellPattern;
+import controleurs.audio.Audio;
 import controleurs.serial.SerialMgr;
 import controleurs.socket.SocketMgr;
 
@@ -29,6 +30,8 @@ public class CtrlGeneral {
 	private static verifVeille veille;
 
 	public CtrlGeneral( int iPort, int iMaxCon, boolean isRunning, String sSerialPort, int iSerialSpeed, int iSerialTimeOut, boolean bNoSerial ) {
+		Audio.play(Audio.SOUND_START);
+		
 		if( iPort == -1 ) 
 			iPort = ServeurModele.DEFAUT_PORT;
 
@@ -70,11 +73,15 @@ public class CtrlGeneral {
 		ea = new ExtraAction(IAction.typeAlim, IAction.alimStandBy, IAction.On);
 		FifoSenderShell.put(ShellPattern.actionToShell(ea));
 		
+
 		// envoi d'un son de bienvenue
-		SpeakAction sa = new SpeakAction("Bonjour! Je m'appelle Arduibote. Je me prépare, veuillez patienter.");
-		FifoSenderShell.put( ShellPattern.actionToShell(sa) );
+		SpeakAction sa = new SpeakAction("Bonjour! Je m'appelle Arduibote.");
+		//FifoSenderShell.put( ShellPattern.actionToShell(sa) );
+		Audio.speak(sa);
 		
 		//Runtime.getRuntime().addShutdownHook(new ShutDownTreatement());
+		ShutDownTreatement sdt = new ShutDownTreatement();
+		sdt.start();
 	}
 	
 	public static class verifVeille extends TimerTask {

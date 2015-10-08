@@ -7,6 +7,8 @@ import modeles.Verbose;
 import modeles.dao.communication.beanshell.ShellCmd;
 import modeles.dao.communication.beanshell.ShellResult;
 
+
+
 public class ExecuteShellComand implements Runnable{
  
 	private String[] command = {};
@@ -76,7 +78,7 @@ public class ExecuteShellComand implements Runnable{
 	}
 	public ShellResult executeCommand() {
 		ShellResult sr = null;
-		if( command.length != 0 )
+		if( command != null && command.length != 0 )
 			sr = executeCommand(command);
 		return sr;
 	}	 

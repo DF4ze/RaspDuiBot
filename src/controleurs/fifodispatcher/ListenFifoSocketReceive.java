@@ -1,9 +1,7 @@
 package controleurs.fifodispatcher;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
-
-import controleurs.CtrlGeneral;
 import modeles.ServeurModele;
 import modeles.Verbose;
 import modeles.dao.communication.beanfifo.FifoReceiverSocket;
@@ -13,9 +11,11 @@ import modeles.dao.communication.beansactions.DirectionAction;
 import modeles.dao.communication.beansactions.ExtraAction;
 import modeles.dao.communication.beansactions.GetStateAction;
 import modeles.dao.communication.beansactions.IAction;
+import modeles.dao.communication.beansactions.SpeakAction;
 import modeles.dao.communication.beansactions.TourelleAction;
 import modeles.dao.communication.beanshell.ShellCmd;
 import modeles.dao.shell.ShellPattern;
+import controleurs.CtrlGeneral;
 
 public class ListenFifoSocketReceive implements Runnable{
 	public void run() {
@@ -29,7 +29,10 @@ public class ListenFifoSocketReceive implements Runnable{
 					while( FifoReceiverSocket.getInstance().size() != 0 ){
 						IAction ia = FifoReceiverSocket.get();
 						
-						 if( ia instanceof TourelleAction || ia instanceof DirectionAction ){
+						if( Verbose.isEnable() )
+							System.out.println( "Socket Receved : "+ia.getClass().getName()+"\n"+ia.toString() );
+						
+						if( ia instanceof TourelleAction || ia instanceof DirectionAction ){
 							sendToSerial(ia);
 							
 						}else if( ia instanceof ExtraAction ){
@@ -58,6 +61,12 @@ public class ListenFifoSocketReceive implements Runnable{
 							}
 								
 							
+						}else if( ia instanceof SpeakAction ){
+							SpeakAction sa = (SpeakAction)ia;
+							sendToShell(sa);
+						
+						}else{
+							System.out.println("Action non reconnue");
 						}
 						 
 						 ServeurModele.setCmdReceptLastMinute( ServeurModele.getCmdReceptLastMinute() +1);
@@ -101,7 +110,7 @@ public class ListenFifoSocketReceive implements Runnable{
 				
 		if( ea instanceof GetStateAction ){
 			
-			ArrayList<ShellCmd> alCmd = new ArrayList<ShellCmd>();
+			LinkedList<ShellCmd> alCmd = new LinkedList<ShellCmd>();
 			ShellPattern.actionToShell(ea, alCmd);
 			
 			for( ShellCmd sh : alCmd ){

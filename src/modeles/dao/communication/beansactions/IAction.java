@@ -21,6 +21,7 @@ public interface IAction extends Serializable {
 	final int typeWebcam	= 2;
 	final int typeAlim		= 3;
 	final int typeDrone		= 4;
+	final int typeVolume	= 5;
 	
 	// Extra-Lights
 	final static int Lazer 	= 1;
