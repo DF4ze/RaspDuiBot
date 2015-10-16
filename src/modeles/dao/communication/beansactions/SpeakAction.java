@@ -76,7 +76,7 @@ public class SpeakAction extends GeneralAction {
 		this.vitesse = vitesse;
 	}
 
-	public int getTss() {
+	public int getTts() {
 		return tss;
 	}
 

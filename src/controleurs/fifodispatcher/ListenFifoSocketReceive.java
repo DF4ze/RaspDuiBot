@@ -13,9 +13,11 @@ import modeles.dao.communication.beansactions.GetStateAction;
 import modeles.dao.communication.beansactions.IAction;
 import modeles.dao.communication.beansactions.SpeakAction;
 import modeles.dao.communication.beansactions.TourelleAction;
+import modeles.dao.communication.beansactions.VolumeAction;
 import modeles.dao.communication.beanshell.ShellCmd;
 import modeles.dao.shell.ShellPattern;
 import controleurs.CtrlGeneral;
+import controleurs.audio.Audio;
 
 public class ListenFifoSocketReceive implements Runnable{
 	public void run() {
@@ -64,6 +66,10 @@ public class ListenFifoSocketReceive implements Runnable{
 						}else if( ia instanceof SpeakAction ){
 							SpeakAction sa = (SpeakAction)ia;
 							sendToShell(sa);
+						
+						}else if( ia instanceof VolumeAction ){
+							VolumeAction va = (VolumeAction)ia;
+							sendToShell(va);
 						
 						}else{
 							System.out.println("Action non reconnue");
@@ -123,7 +129,11 @@ public class ListenFifoSocketReceive implements Runnable{
 					System.out.println( "Socket-Shell Send : "+sCmd );
 				}
 			}
+		}else if( ea instanceof SpeakAction ){
+			Audio.speak((SpeakAction)ea);
+			
 		}else{
+		
 			ShellCmd shellcmd = ShellPattern.actionToShell(ea);
 			FifoSenderShell.put( shellcmd );
 			if( Verbose.isEnable() ){

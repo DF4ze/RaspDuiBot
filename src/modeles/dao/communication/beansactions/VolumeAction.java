@@ -8,25 +8,36 @@ public class VolumeAction extends GeneralAction {
 	private int pourcent = 10;
 	private boolean muting = false;
 	
+	public static final int volumePourCentDefault = 10;
+	
 	public VolumeAction() {
+		setRepeatable(true);
 	}
 
 	public VolumeAction( boolean sens, int pourcent ) {
+		setRepeatable(true);
 		setPourcent(pourcent);
 		setSens(sens);
 	}
 
 	public VolumeAction( boolean sens, boolean muting ) {
+		setRepeatable(true);
 		setMuting(muting);
 		setSens(sens);
 	}
 
 	public VolumeAction( boolean sens, boolean muting, int pourcent ) {
+		setRepeatable(true);
 		setMuting(muting);
 		setSens(sens);
 		setPourcent(pourcent);
 	}
-
+	
+	@Override
+	public String toString(){
+		return "sens : "+sens+" muting : "+muting+" pourcent : "+pourcent;
+	}
+	
 	@Override
 	public String getAction() {
 		// TODO Auto-generated method stub

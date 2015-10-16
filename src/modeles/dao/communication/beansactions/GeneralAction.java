@@ -6,8 +6,9 @@ public abstract class GeneralAction implements IAction {
 
 	private static final long serialVersionUID = 1L;
 	
-	private int priority 	= 0;
-	private long timeStamp 	= 0;
+	private int priority 		= 0;
+	private long timeStamp 		= 0;
+	private boolean repeatable 	= false;
 
 	public GeneralAction() {
 		setTimeStamp(0);
@@ -41,6 +42,14 @@ public abstract class GeneralAction implements IAction {
 	
 	public String toString(){
 		return getAction() + IAction.serialEndCommand;
+	}
+
+	public boolean isRepeatable() {
+		return repeatable;
+	}
+
+	public void setRepeatable(boolean repeatable) {
+		this.repeatable = repeatable;
 	}
 
 }

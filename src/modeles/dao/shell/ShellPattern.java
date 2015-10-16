@@ -190,7 +190,7 @@ public class ShellPattern {
 		shellCmd = new ShellCmd();
 		shellCmd.setName(speakName);
 		
-		if( sa.getTss() == SpeakAction.ttsEspeak )
+		if( sa.getTts() == SpeakAction.ttsEspeak )
 			shellCmd.setCommand( espeakToCmd(sa) );
 		
 		/*else if( sa.getTss() == SpeakAction.ttsPico )
@@ -206,7 +206,7 @@ public class ShellPattern {
 		ShellCmd shellCmd2 = new ShellCmd();
 		shellCmd2.setName(speakName);
 		
-		if( sa.getTss() == SpeakAction.ttsPico ){
+		if( sa.getTts() == SpeakAction.ttsPico ){
 			shellCmd1.setCommand( picoSynthToCmd(sa) );
 			alShellCmd.addLast(shellCmd1);
 			shellCmd2.setCommand(speak_pico);

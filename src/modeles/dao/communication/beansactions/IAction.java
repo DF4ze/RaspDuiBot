@@ -53,5 +53,6 @@ public interface IAction extends Serializable {
 	public long getTimeStamp();
 	public int getPriority();
 	public boolean isComplete();
+	public boolean isRepeatable();
 	public String toString();
 }

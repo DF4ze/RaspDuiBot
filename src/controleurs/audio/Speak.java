@@ -18,10 +18,10 @@ public class Speak extends Thread {
 
 	@Override
 	public void run() {
-		if( sa.getTss() == SpeakAction.ttsEspeak ){
+		if( sa.getTts() == SpeakAction.ttsEspeak ){
 			FifoSenderShell.put( ShellPattern.actionToShell(sa) );
 		
-		}else if( sa.getTss() == SpeakAction.ttsPico ){
+		}else if( sa.getTts() == SpeakAction.ttsPico ){
 			LinkedList<ShellCmd> alShells = new LinkedList<ShellCmd>();
 			ShellPattern.actionToShell(sa, alShells);
 			
