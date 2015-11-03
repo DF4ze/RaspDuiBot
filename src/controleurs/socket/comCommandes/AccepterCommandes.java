@@ -1,10 +1,9 @@
-package controleurs.socket;
+package controleurs.socket.comCommandes;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 
 import modeles.dao.communication.beansocket.SocketNum;
-import controleurs.socket.comCommandes.ClientServeurCommandes;
 
 public class AccepterCommandes implements Runnable {
 

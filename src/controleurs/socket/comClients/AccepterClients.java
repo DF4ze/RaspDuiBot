@@ -1,4 +1,4 @@
-package controleurs.socket;
+package controleurs.socket.comClients;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -8,7 +8,6 @@ import modeles.Verbose;
 import modeles.dao.communication.beanfifo.FifoReceiverSocket;
 import modeles.dao.communication.beansactions.GetStateAction;
 import modeles.dao.communication.beansocket.SocketNum;
-import controleurs.socket.comClients.ClientServeur;
 
 public class AccepterClients implements Runnable {
 
