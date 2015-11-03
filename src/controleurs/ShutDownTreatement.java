@@ -41,8 +41,12 @@ public class ShutDownTreatement extends Thread {
 			}catch(Exception e){}
 		}
 		
-		
-		SpeakAction sa = new SpeakAction("L'application va s'arreter, a bientot!");
+		shutdown();
+
+	}
+	
+	public void shutdown(){
+		SpeakAction sa = new SpeakAction("L'application va s'arraiter, a bientot!");
 		Audio.speak(sa);
 		try {
 			ShutDownTreatement.sleep(3000l);
@@ -56,6 +60,6 @@ public class ShutDownTreatement extends Thread {
 		} catch (InterruptedException e) {}
 
 		
-		Runtime.getRuntime().exit(0);
+		Runtime.getRuntime().exit(0);		
 	}
 }

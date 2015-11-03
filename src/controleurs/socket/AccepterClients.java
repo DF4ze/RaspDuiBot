@@ -8,7 +8,7 @@ import modeles.Verbose;
 import modeles.dao.communication.beanfifo.FifoReceiverSocket;
 import modeles.dao.communication.beansactions.GetStateAction;
 import modeles.dao.communication.beansocket.SocketNum;
-import controleurs.socket.com.ClientServeur;
+import controleurs.socket.comClients.ClientServeur;
 
 public class AccepterClients implements Runnable {
 
@@ -58,6 +58,9 @@ public class AccepterClients implements Runnable {
 		}
 		
 		mod.delAllClient();
+		try {
+			mod.releaseAllConnexion();
+		} catch (InterruptedException e1) {}
 		mod.setRunning(false);
 	}
 

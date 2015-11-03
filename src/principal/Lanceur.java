@@ -5,18 +5,24 @@ import modeles.Verbose;
 import controleurs.CtrlGeneral;
 
 public class Lanceur {
+	
+	private static int iPort = -1;
+	private static int iMaxCon = -1;
+	private static boolean isRunning = ServeurModele.DEFAUT_STATE;
+	private static String sSerialPort = ServeurModele.DEFAUT_SERIAL;
+	private static int iSerialSpeed = ServeurModele.DEFAUT_SPEED;
+	private static int iSerialTimeout = ServeurModele.DEFAUT_TIMEOUT;
+	private static boolean bNoSerial = false;
+	private static boolean  bOk = true;
+	private static boolean  bAsService = false;
+	
+	private static CtrlGeneral ctrlGeneral;
 
-	public static void main(String[] args) {
-		int iPort = -1;
-		int iMaxCon = -1;
-		boolean isRunning = ServeurModele.DEFAUT_STATE;
-		String sSerialPort = ServeurModele.DEFAUT_SERIAL;
-		int iSerialSpeed = ServeurModele.DEFAUT_SPEED;
-		int iSerialTimeout = ServeurModele.DEFAUT_TIMEOUT;
-		boolean bNoSerial = false;
-		
-		boolean bOk = true;
-		
+	/*
+	 * Pour jsvc : init() start(); stop(); destroy();
+	 * 
+	 */
+	public static void init(String[] args){
 		// Récupération des parametres
 		for( int i=0; i < args.length; i++ ){
 			// si detection du parametre de PORT
@@ -128,20 +134,11 @@ public class Lanceur {
 				
 			// mode non serial
 			}else if( args[i].equals("-ns") || args[i].equals("-noserial") ){
-				// le parametre est-il présent?
-				if( i+1 < args.length ){
-					if( args[i+1].equals("0") || args[i+1].equals("false")){
-						bNoSerial = false;
-						i++;
-					}else if( args[i+1].equals("1") || args[i+1].equals("true")){
-						bNoSerial = true;
-						i++;
-					}else{
-						bOk = false;
-					}
-				}else{
-					bOk = false;
-				}
+				bNoSerial = true;
+			}
+			// run as a service
+			else if( args[i].equals("-s") || args[i].equals("-service") ){
+				bAsService = true;
 			}
 			
 			// si demande de l'aide ou s'il y a eu une erreur
@@ -153,14 +150,30 @@ public class Lanceur {
 			if( !bOk )
 				break;
 		}
-		
-		
+	}
+	
+	public static void start(){
 		
 		// Lancement de l'application
 		if( bOk ){
-			new CtrlGeneral( iPort, iMaxCon, isRunning, sSerialPort, iSerialSpeed, iSerialTimeout, bNoSerial );
+			ctrlGeneral = new CtrlGeneral( iPort, iMaxCon, isRunning, sSerialPort, iSerialSpeed, iSerialTimeout, bNoSerial, bAsService );
 		}
+		
 	}
+	
+	public static void stop(){
+		ctrlGeneral.shutdown();
+	}
+	
+	public static void destroy(){
+		
+	}
+	/*
+	 * 
+	 */
+	
+
+
 	
 	public static String getHelpMsg(String[] args){
 		return "use :  [-p/-port PORTNUMBER] [-h/-help] [-v/-verbose 0/1]\n\n"+
@@ -174,5 +187,12 @@ public class Lanceur {
 				"-t/-serialtimeout MILLIS : timeout de connexion au port serie (en ms). Par defaut : "+ServeurModele.DEFAUT_TIMEOUT+"\n"+
 				"-ns/-noserial TRUE/FALSE: desactive le port serie. Par defaut : FALSE"+"\n";
 	}
-
+	
+	
+	public static void main(String[] args) {
+		
+		init(args);
+		
+		start();
+	}
 }

@@ -11,6 +11,7 @@ import modeles.dao.communication.beanshell.ShellResult;
 
 public class ExecuteShellComand implements Runnable{
  
+	private ShellCmd currentShellCmd;
 	private String[] command = {};
 	private StringBuffer output = new StringBuffer("");
 	private boolean error = false;
@@ -39,6 +40,7 @@ public class ExecuteShellComand implements Runnable{
 	}
  
 	public ExecuteShellComand( ShellCmd shCmd ){
+		currentShellCmd = shCmd;
 		command = shCmd.getCommand();
 		setName(shCmd.getName());
 	}
@@ -61,6 +63,12 @@ public class ExecuteShellComand implements Runnable{
 				output.append(line + "\n");
 			}
  
+			// on reveille ceux qui attendent le résultat
+			synchronized (currentShellCmd) {
+				currentShellCmd.notifyAll();
+			}
+			
+			
 			reader.close();
 			
 		} catch (Exception e) {

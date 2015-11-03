@@ -13,14 +13,14 @@ import modeles.dao.communication.beanshell.ShellCmd;
 public class ShellPattern {
 
 	//private static String startSteamWCTour = "/usr/local/bin/mjpg_streamer -i \"/usr/local/lib/input_uvc.so -f 10r VGA\" -o \"/usr/local/lib/output_http.so -w /var/www/cam\" 2>&1";
-	public static String startSteamWCTourName = "Streaming Webcam ON";
-	private static String [] startSteamWCTour = {
+	public static String startStreamWCTourName = "Streaming Webcam ON";
+	private static String [] startStreamWCTour = {
 		"/usr/local/bin/mjpg_streamer",
 		"-i", "/usr/local/lib/input_uvc.so -f 10r VGA",
 		"-o", "/usr/local/lib/output_http.so -w /var/www/cam"};
 	
-	public static String stopSteamWCTourName = "Streaming Webcam OFF";
-	private static String [] stopSteamWCTour = {"pkill", "mjpg_streamer"};
+	public static String stopStreamWCTourName = "Streaming Webcam OFF";
+	private static String [] stopStreamWCTour = {"pkill", "mjpg_streamer"};
 	
 	public static String testName = "ping Google";
 	@SuppressWarnings("unused")
@@ -31,16 +31,16 @@ public class ShellPattern {
 //	private static String [] stateStreaming = {"ps", "-ef", "|grep", "mjpg_streamer"};
 	
 	public static String resetPinAlimName = "Declare pin alim OUT";
-	private static String [] resetPinAlim = {"gpio", "-g", "mode", Integer.toString(ServeurModele.DEFAULT_PINALIM), "out"};
+	private static String [] resetPinAlim = {"gpio", /*"-g",*/ "mode", Integer.toString(ServeurModele.DEFAULT_PINALIM), "out"};
 	
 	public static String pinAlimOnName = "pin alim ON";
-	private static String [] pinAlimOn = {"gpio", "-g", "write", Integer.toString(ServeurModele.DEFAULT_PINALIM), "1"};
+	private static String [] pinAlimOn = {"gpio", /*"-g",*/ "write", Integer.toString(ServeurModele.DEFAULT_PINALIM), "1"};
 	
 	public static String pinAlimOffName = "pin alim OFF";
-	private static String [] pinAlimOff = {"gpio", "-g", "write", Integer.toString(ServeurModele.DEFAULT_PINALIM), "0"};
+	private static String [] pinAlimOff = {"gpio", /*"-g",*/ "write", Integer.toString(ServeurModele.DEFAULT_PINALIM), "0"};
 	
 	public static String pinAlimStateName = "pin State";
-	private static String [] pinAlimState = {"gpio", "-g", "read", Integer.toString(ServeurModele.DEFAULT_PINALIM)};
+	private static String [] pinAlimState = {"gpio", /*"-g",*/ "read", Integer.toString(ServeurModele.DEFAULT_PINALIM)};
 	
 	public static String speakName = "Speaking";
 	private static String [] speak_espeak = {"/usr/bin/espeak", "-vfr+15", "-k20", "-s150", "Text To Speech", "> /dev/null 2>&1"};
@@ -111,12 +111,12 @@ public class ShellPattern {
 		if( ea.getType() == IAction.typeWebcam ){
 			if( ea.getKey() == IAction.webcamTour ){
 				if( ea.getValue() == IAction.Off ){
-					cmd = stopSteamWCTour;
-					shellCmd.setName(stopSteamWCTourName);
+					cmd = stopStreamWCTour;
+					shellCmd.setName(stopStreamWCTourName);
 					
 				}else{
-					cmd = startSteamWCTour;
-					shellCmd.setName(startSteamWCTourName);
+					cmd = startStreamWCTour;
+					shellCmd.setName(startStreamWCTourName);
 				}
 			}
 		}else if( ea.getType() == IAction.typeAlim ){

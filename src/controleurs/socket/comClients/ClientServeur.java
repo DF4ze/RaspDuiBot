@@ -1,4 +1,4 @@
-package controleurs.socket.com;
+package controleurs.socket.comClients;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

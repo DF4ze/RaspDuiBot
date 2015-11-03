@@ -1,4 +1,4 @@
-package controleurs.socket.com;
+package controleurs.socket.comClients;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -6,7 +6,6 @@ import java.io.ObjectInputStream;
 import modeles.ServeurModele;
 import modeles.Verbose;
 import modeles.dao.communication.beanfifo.FifoReceiverSocket;
-import modeles.dao.communication.beansactions.ExtraAction;
 import modeles.dao.communication.beansactions.IAction;
 import modeles.dao.communication.beansocket.SocketNum;
 
@@ -53,10 +52,7 @@ public class Reception implements Runnable {
 						mySocket.getSocket().close();
 					} catch (IOException e1) {}
 					
-					if( mod.getNbConnected() == 0 ){
-						ExtraAction ea = new ExtraAction( IAction.typeAlim, IAction.alimStandBy, IAction.On );
-						FifoReceiverSocket.put(ea);
-					}
+
 						
 					
 					break;

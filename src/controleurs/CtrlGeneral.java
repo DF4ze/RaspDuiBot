@@ -5,6 +5,8 @@ import gnu.io.PortInUseException;
 import gnu.io.UnsupportedCommOperationException;
 
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -17,10 +19,11 @@ import modeles.dao.communication.beansactions.IAction;
 import modeles.dao.communication.beansactions.SpeakAction;
 import modeles.dao.shell.ShellPattern;
 import controleurs.audio.Audio;
+import controleurs.network.NetworkManager;
 import controleurs.serial.SerialMgr;
 import controleurs.socket.SocketMgr;
 
-public class CtrlGeneral {
+public class CtrlGeneral implements Observer{
 	
 	@SuppressWarnings("unused")
 	private SocketMgr srv;
@@ -28,8 +31,10 @@ public class CtrlGeneral {
 	private SerialMgr serial;
 	private static Timer timerVeille;
 	private static verifVeille veille;
+	private NetworkManager networkManager;
+	private ShutDownTreatement sdt;
 
-	public CtrlGeneral( int iPort, int iMaxCon, boolean isRunning, String sSerialPort, int iSerialSpeed, int iSerialTimeOut, boolean bNoSerial ) {
+	public CtrlGeneral( int iPort, int iMaxCon, boolean isRunning, String sSerialPort, int iSerialSpeed, int iSerialTimeOut, boolean bNoSerial, boolean asService ) {
 		Audio.play(Audio.SOUND_START);
 		
 		if( iPort == -1 ) 
@@ -40,6 +45,7 @@ public class CtrlGeneral {
 		
 		mod = new ServeurModele(iPort, iMaxCon, isRunning, sSerialPort, iSerialSpeed, iSerialTimeOut, bNoSerial);
 		new SocketMgr(mod);
+		mod.addObserver(this);
 		
 		if( !mod.isbNoSerial() ){
 			serial = new SerialMgr( mod );
@@ -80,8 +86,16 @@ public class CtrlGeneral {
 		Audio.speak(sa);
 		
 		//Runtime.getRuntime().addShutdownHook(new ShutDownTreatement());
-		ShutDownTreatement sdt = new ShutDownTreatement();
-		sdt.start();
+		sdt = new ShutDownTreatement();
+		if( !asService )
+			sdt.start();
+		
+		// On lance le vérificateur de réseau
+		networkManager = NetworkManager.launch( mod );
+	}
+	
+	public void shutdown(){
+		sdt.shutdown();
 	}
 	
 	public static class verifVeille extends TimerTask {
@@ -118,6 +132,19 @@ public class CtrlGeneral {
 			timerVeille.cancel();
 		}catch( IllegalStateException e){}
 		catch( NullPointerException e ){}
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+
+		if( arg.equals("NOMORECLIENT") ){
+			ExtraAction ea = new ExtraAction( IAction.typeAlim, IAction.alimStandBy, IAction.On );
+			FifoReceiverSocket.put(ea);
+			
+		}else if( arg.equals("PING") ){
+			networkManager.pingReceived( mod.getLastPing() );
+		}
+		
 	}
 
 }

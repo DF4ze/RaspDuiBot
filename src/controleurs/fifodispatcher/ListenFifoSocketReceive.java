@@ -11,6 +11,7 @@ import modeles.dao.communication.beansactions.DirectionAction;
 import modeles.dao.communication.beansactions.ExtraAction;
 import modeles.dao.communication.beansactions.GetStateAction;
 import modeles.dao.communication.beansactions.IAction;
+import modeles.dao.communication.beansactions.PongAction;
 import modeles.dao.communication.beansactions.SpeakAction;
 import modeles.dao.communication.beansactions.TourelleAction;
 import modeles.dao.communication.beansactions.VolumeAction;
@@ -71,11 +72,16 @@ public class ListenFifoSocketReceive implements Runnable{
 							VolumeAction va = (VolumeAction)ia;
 							sendToShell(va);
 						
+						}else if( ia instanceof PongAction ){
+							ServeurModele.getInstance().setLastPing(((PongAction)ia).getTimeStamp());
+						
 						}else{
 							System.out.println("Action non reconnue");
 						}
 						 
-						 ServeurModele.setCmdReceptLastMinute( ServeurModele.getCmdReceptLastMinute() +1);
+						
+						if( !(ia instanceof PongAction) )
+							ServeurModele.setCmdReceptLastMinute( ServeurModele.getCmdReceptLastMinute() +1);
 					}
 				} catch (InterruptedException e) { break; }
 			}

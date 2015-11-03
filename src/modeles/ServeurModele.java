@@ -28,7 +28,7 @@ public class ServeurModele extends Observable {
 	public static final int DEFAUT_SPEED		= 57600;
 	public static final int DEFAUT_TIMEOUT		= 2000;
 	
-	public static final int DEFAULT_PINALIM		= 17;
+	public static final int DEFAULT_PINALIM		= 7;
 	
 	
 	private boolean bNoSerial		= DEFAUT_NOSERIAL;
@@ -48,6 +48,8 @@ public class ServeurModele extends Observable {
 	
 	private int volumePrCent;
 	private boolean volumeMute;
+	
+	private long lastPing = 0;
 		
 	private static ServeurModele me = null;
 
@@ -103,10 +105,19 @@ public class ServeurModele extends Observable {
 				break;
 			}
 		}
+		
+		if( clientsConnected.size() == 0 ){
+			setChanged();
+			notifyObservers("NOMORECLIENT");
+		}
+		
 		return num;
 	}
 	public void delAllClient(){
 		clientsConnected.clear();
+		
+		setChanged();
+		notifyObservers("NOMORECLIENT");
 	}
 	public int getNbConnected(){
 		return clientsConnected.size();
@@ -148,17 +159,23 @@ public class ServeurModele extends Observable {
 		this.semaphore = semaphore;
 	}
 
-	public void acquireConnexion() throws InterruptedException{
-		semaphore.acquire();
+	public boolean acquireConnexion() throws InterruptedException{
+		return semaphore.tryAcquire();
 	}
 	
 	public void releaseConnexion() throws InterruptedException{
 		semaphore.release();
 	}
 	
+	public void releaseAllConnexion() throws InterruptedException{
+		while( semaphore.availablePermits() != DEFAUT_MAXCON )
+			semaphore.release();
+	}
+	
 	public void releaseConnexion( Socket s ) throws InterruptedException{
 		releaseConnexion();
 		delClient(s);
+			
 	}
 	
 	
@@ -302,6 +319,18 @@ public class ServeurModele extends Observable {
 
 	public void setVolumeMute(boolean volumeMute) {
 		this.volumeMute = volumeMute;
+	}
+
+	public long getLastPing() {
+		return lastPing;
+	}
+
+	public void setLastPing(long lastPing) {
+		this.lastPing = lastPing;
+		
+		setChanged();
+		notifyObservers("PING");
+
 	}
 
 

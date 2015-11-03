@@ -29,10 +29,14 @@ public class Speak extends Thread {
 				System.out.println("Speaking, nb cmd : "+alShells.size());
 			
 			while( alShells.size() != 0 ){
-				FifoSenderShell.put( alShells.poll() );
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {}
+				ShellCmd scmd = alShells.poll();
+				synchronized (scmd) {
+					FifoSenderShell.put( scmd );
+					try {
+						scmd.wait(10000);
+					} catch (InterruptedException e) {}
+				}
+				
 			}
 			
 		}
