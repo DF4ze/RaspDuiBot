@@ -18,22 +18,22 @@ public class ExecuteShellComand implements Runnable{
 	private boolean commandEnded = false;
 	private String name = "";
 	
-	public static void main(String[] args) {
-		
-		String [] command = new String[6];
-		command[0] = "/usr/local/bin/mjpg_streamer";
-		command[1] = "-i";
-		command[2] = "/usr/local/lib/input_uvc.so -f 10r VGA";
-		command[3] = "-o";
-		command[4] = "/usr/local/lib/output_http.so -w /var/www/cam";
-		command[5] = "&";
-		
-		ExecuteShellComand obj = new ExecuteShellComand();
-		ShellResult sr = obj.executeCommand(command);
- 
-		System.out.println(sr.getResult());
- 		
-	}
+//	public static void main(String[] args) {
+//		
+//		String [] command = new String[6];
+//		command[0] = "/usr/local/bin/mjpg_streamer";
+//		command[1] = "-i";
+//		command[2] = "/usr/local/lib/input_uvc.so -f 10r VGA";
+//		command[3] = "-o";
+//		command[4] = "/usr/local/lib/output_http.so -w /var/www/cam";
+//		command[5] = "&";
+//		
+//		ExecuteShellComand obj = new ExecuteShellComand();
+//		ShellResult sr = obj.executeCommand(command);
+// 
+//		System.out.println(sr.getResult());
+// 		
+//	}
 	
 	public ExecuteShellComand(){
 		
@@ -47,6 +47,7 @@ public class ExecuteShellComand implements Runnable{
 	
 	public ShellResult executeCommand(String command[]) {
   
+		ShellResult sr = null;
 		Process p;
 		try {
 			p = Runtime.getRuntime().exec(command);
@@ -65,6 +66,9 @@ public class ExecuteShellComand implements Runnable{
  
 			// on reveille ceux qui attendent le résultat
 			synchronized (currentShellCmd) {
+				sr = new ShellResult( getName(), getCommand(), getOutput(), error);
+				currentShellCmd.setResult(sr);
+				
 				currentShellCmd.notifyAll();
 			}
 			
@@ -81,7 +85,7 @@ public class ExecuteShellComand implements Runnable{
 			//notifyAll();
 		}
  
-		return new ShellResult( getName(), getCommand(), getOutput(), error);
+		return sr;
  
 	}
 	public ShellResult executeCommand() {

@@ -32,20 +32,22 @@ public class ListenFifoShellSend implements Runnable{
 
 								ShellResult shellresult = shell.executeCommand();
 								
-								if( shell.isCommandEnded() )
-									System.out.print("Fin de la commande ");
-								else
-									System.out.print("Commande n'est pas finie ");
-								
-								if( shell.isError() )
-									System.out.println("en erreur");
-								else
-									System.out.println("sans erreur");
-								
+//								if( shell.isCommandEnded() )
+//									System.out.print("Fin de la commande ");
+//								else
+//									System.out.print("Commande n'est pas finie ");
+//								
+//								if( shell.isError() )
+//									System.out.println("en erreur");
+//								else
+//									System.out.println("sans erreur");
+//								
+//								if( Verbose.isEnable() )
+//									System.out.println( "Shell Received suite a "+shellresult.getName()+" : "+shellresult.getResult() );
+//								
 								FifoReceiverShell.put(shellresult);
-								if( Verbose.isEnable() )
-									System.out.println( "Shell Received suite a "+shellresult.getName()+" : "+shellresult.getResult() );
-
+								
+								shellcmd.setResult(shellresult);
 							}
 						};
 						

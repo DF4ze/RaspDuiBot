@@ -57,7 +57,8 @@ public class MicroRetreiver extends Thread{
             microphone.close();
             
         }catch( Exception e ){
-        	e.printStackTrace();
+        	System.err.println("Erreur lors de la lecture du micro : "+e.getMessage());
+        	MicrophoneModel.setClientConnected(false);
         }
 	}
 

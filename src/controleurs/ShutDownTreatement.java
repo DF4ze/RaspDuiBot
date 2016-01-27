@@ -46,7 +46,7 @@ public class ShutDownTreatement extends Thread {
 	}
 	
 	public void shutdown(){
-		SpeakAction sa = new SpeakAction("L'application va s'arraiter, a bientot!");
+		SpeakAction sa = new SpeakAction("Le serveur Arduibote va s'arrêter, a bientot!");
 		Audio.speak(sa);
 		try {
 			ShutDownTreatement.sleep(3000l);

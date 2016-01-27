@@ -21,7 +21,7 @@ import modeles.dao.shell.ShellPattern;
 
 public class Audio extends Thread {
 
-	private static String SOUNDS_PATH = "/root/scripts/sounds/";
+	private static final String SOUNDS_PATH = "/root/scripts/sounds/";
 /*	static{
 		// ici il faut récupérer le volume de départ...
 		
@@ -52,7 +52,7 @@ public class Audio extends Thread {
 	private AudioInputStream audioInputStream = null;
 	private SourceDataLine line;
 	private String chemin;
-
+	private static Speak sp;
 
 
 	
@@ -65,58 +65,34 @@ public class Audio extends Thread {
 		try {
 			@SuppressWarnings("unused")
 			AudioFileFormat format = AudioSystem.getAudioFileFormat(fichier);
-		} catch (UnsupportedAudioFileException e) {
-			if( Verbose.isEnable() )
-				System.out.println("Audio error : "+e.getMessage());
-		} catch (IOException e) {
-			if( Verbose.isEnable() )
-				System.out.println("Audio error : "+e.getMessage());
-		}
 
-		try {
 			audioInputStream = AudioSystem.getAudioInputStream(fichier);
-		} catch (UnsupportedAudioFileException e) {
-			if( Verbose.isEnable() )
-				System.out.println("Audio error : "+e.getMessage());
-			return;
-		} catch (IOException e) {
-			if( Verbose.isEnable() )
-				System.out.println("Audio error : "+e.getMessage());
-			return;
-		}
 
-		AudioFormat audioFormat = audioInputStream.getFormat();
-		DataLine.Info info = new DataLine.Info(SourceDataLine.class,
-				audioFormat);
+			AudioFormat audioFormat = audioInputStream.getFormat();
+			DataLine.Info info = new DataLine.Info(SourceDataLine.class,
+					audioFormat);
 
-		try {
 			line = (SourceDataLine) AudioSystem.getLine(info);
-
-		} catch (LineUnavailableException e) {
-			if( Verbose.isEnable() )
-				System.out.println("Audio error : "+e.getMessage());
-			return;
-		}
-
-		try {
 			line.open(audioFormat);
-		} catch (LineUnavailableException e) {
-			if( Verbose.isEnable() )
-				System.out.println("Audio error : "+e.getMessage());
-			return;
-		}
-		line.start();
-		// Fenetre.begin=true;
-		try {
+			line.start();
+			// Fenetre.begin=true;
+		
 			byte bytes[] = new byte[1024];
 			int bytesRead = 0;
 			while ((bytesRead = audioInputStream.read(bytes, 0, bytes.length)) != -1) {
 				line.write(bytes, 0, bytesRead);
 			}
+		} catch (UnsupportedAudioFileException e) {
+			if( Verbose.isEnable() )
+				System.out.println("Audio error, UnsupportedAudioFileException : "+e.getMessage());
+			return;
 		} catch (IOException e) {
 			if( Verbose.isEnable() )
-				System.out.println("Audio error : "+e.getMessage());
+				System.out.println("Audio error, IOException : "+e.getMessage());
 			return;
+		} catch (LineUnavailableException e) {
+			if( Verbose.isEnable() )
+				System.out.println("Audio error, LineUnavailableException : "+e.getMessage());
 		}
 	}
 
@@ -165,7 +141,15 @@ public class Audio extends Thread {
 	}
 	
 	public static void speak( SpeakAction sa ){
-		Speak sp = new Speak(sa);
+		if( sp != null && !sp.isFinished()){
+			synchronized (sp) {
+				try {
+					sp.wait(20000);
+				} catch (InterruptedException e) {}
+				
+			}
+		}
+		sp = new Speak(sa);
 		sp.start();
 	}
 
