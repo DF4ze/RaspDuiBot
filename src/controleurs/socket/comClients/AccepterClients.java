@@ -1,4 +1,4 @@
-package controleurs.socket;
+package controleurs.socket.comClients;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -6,9 +6,9 @@ import java.net.ServerSocket;
 import modeles.ServeurModele;
 import modeles.Verbose;
 import modeles.dao.communication.beanfifo.FifoReceiverSocket;
+import modeles.dao.communication.beanfifo.FifoSenderSocket;
 import modeles.dao.communication.beansactions.GetStateAction;
 import modeles.dao.communication.beansocket.SocketNum;
-import controleurs.socket.comClients.ClientServeur;
 
 public class AccepterClients implements Runnable {
 
@@ -28,6 +28,8 @@ public class AccepterClients implements Runnable {
 				mod.acquireConnexion();
 				
 				SocketNum socket = new SocketNum( srvSocket.accept() ); 
+				
+				FifoSenderSocket.getInstance().clear();
 				
 				socket.setNumber( mod.addClient(socket.getSocket()) );
 				

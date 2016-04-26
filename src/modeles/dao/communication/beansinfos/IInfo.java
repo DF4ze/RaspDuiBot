@@ -24,6 +24,8 @@ public interface IInfo extends Serializable{
 	final static int stateLazer 	= 3;
 	final static int stateStrob 	= 4;
 	
+	final static int stateWifi	 	= 5;
+	
 	
 
 	public String getInfo();

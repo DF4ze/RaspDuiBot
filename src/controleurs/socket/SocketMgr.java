@@ -3,15 +3,20 @@ package controleurs.socket;
 import java.io.IOException;
 import java.net.ServerSocket;
 
+import controleurs.socket.comClients.AccepterClients;
+import controleurs.socket.comCommandes.AccepterCommandes;
 import modeles.ServeurModele;
 import modeles.Verbose;
-
+import modeles.MicrophoneModel;
+import controleurs.socket.comMicro.AccepterMicro;
+import controleurs.audio.micro.MicroRetreiver;
 
 
 public class SocketMgr{
 	private ServeurModele mod;
 	private ServerSocket srvSocket;
 	private ServerSocket srvSocketCommandes;
+	private ServerSocket srvSocketMicro;
 	private Thread thread;
 
 	public SocketMgr( ServeurModele m ) {
@@ -26,16 +31,14 @@ public class SocketMgr{
 	}
 
 	private void demarrerServeur(){
+		// SOcket pour la communication client/serveur
 		try {
-			
 			srvSocket = new ServerSocket( mod.getiPort());
 			thread = new Thread(new AccepterClients( mod, srvSocket));
 			thread.start();
-
-			//InetAddress thisIp = InetAddress.getLocalHost();
-
-			//System.out.println("INFO : Socket demarree - IP : "+thisIp.getHostAddress()+" Port : "+mod.getiPort()+" - NbMaxCon : "+mod.getiMaxConnexion());
-			System.out.println("INFO : Socket demarre, port "+mod.getiPort() );
+			if( Verbose.isEnable() ){
+				System.out.println("INFO : Socket demarre, port "+mod.getiPort() );
+			}
 		} catch (IOException e) {
 			
 			if( Verbose.isEnable() ){
@@ -45,22 +48,39 @@ public class SocketMgr{
 		}	
 		
 
+		// Socket pour la reception de commandes externes
 		try {
-			
 			srvSocketCommandes = new ServerSocket( 2010 );
 			thread = new Thread(new AccepterCommandes( srvSocketCommandes ));
 			thread.start();
 
-			//InetAddress thisIp = InetAddress.getLocalHost();
-
-			//System.out.println("INFO : Socket demarree - IP : "+thisIp.getHostAddress()+" Port : "+mod.getiPort()+" - NbMaxCon : "+mod.getiMaxConnexion());
-			System.out.println("INFO : Socket Commandes demarre port 2010" );
+			if( Verbose.isEnable() ){
+				System.out.println("INFO : Socket Commandes demarre port 2010" );
+			}
 		} catch (IOException e) {
 			
 			if( Verbose.isEnable() ){
 				System.err.println("Erreur lors du lancement du Thread Serveur Commandes : \n"+e.getMessage());
 			}
-			mod.setRunning(false);
+		}	
+
+		// Socket pour le stream audio
+		try {
+			srvSocketMicro = new ServerSocket( MicrophoneModel.PORT );
+			AccepterMicro am = new AccepterMicro( srvSocketMicro );
+			am.start();
+
+			MicroRetreiver mr = new MicroRetreiver();
+			mr.start();
+			
+			if( Verbose.isEnable() ){
+				System.out.println("INFO : Socket Micro demarre port "+MicrophoneModel.PORT );
+			}
+		} catch (IOException e) {
+			
+			if( Verbose.isEnable() ){
+				System.err.println("Erreur lors du lancement du Thread Serveur Micro : \n"+e.getMessage());
+			}
 		}	
 
 	}
